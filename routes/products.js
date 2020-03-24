@@ -18,4 +18,15 @@ router.post("/", (req, res) => {
   });
 });
 
+router.get("/", (req, res) => {
+  Product.find((err, products) => {
+    if (err) res.send(err);
+
+    res.status(200).json({
+      message:'Products returned.',
+      products
+    })
+  });
+})
+
 module.exports = router;
