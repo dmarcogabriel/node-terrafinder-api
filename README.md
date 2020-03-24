@@ -2,6 +2,12 @@
 
 # Node-Express
 
+## Config
+
+Make shure you have a mongodb server.
+
+Create a `.env` file and run the scripts below. 
+
 ## Scripts:
 
 To install node_modules run:
