@@ -2,8 +2,9 @@ require("dotenv/config");
 const express = require("express");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
-const productRoutes = require('./routes/products');
 const routes = require('./routes');
+const productRoutes = require('./routes/products');
+const userRoutes = require('./routes/users');
 
 const app = express();
 const PORT = process.env.port || 3000;
@@ -21,6 +22,7 @@ app.use(bodyParser.json());
 // Config router
 app.use("/api", routes);
 app.use("/api/products", productRoutes);
+app.use("/api/users", userRoutes);
 
 // Start app
 app.listen(PORT, () => {
