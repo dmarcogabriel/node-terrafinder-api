@@ -1,9 +1,13 @@
 const { Router } = require('express')
+const https = require('https')
 
 const router = Router()
 
 router.use(function (req, res, next){
-  console.log('Middleware interception')
+  if (req.method === 'POST') {
+    console.log('Create array of logs')
+  }
+  
   next()
 })
 
