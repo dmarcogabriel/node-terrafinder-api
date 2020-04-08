@@ -6,5 +6,7 @@ const router = Router()
 router.get('/', userController.index)
 router.get('/:id', userController.getById)
 router.post('/', userController.post)
+router.put('/:id', userController.update)
+router.delete('/:id', userController.delete)
 
 module.exports = router

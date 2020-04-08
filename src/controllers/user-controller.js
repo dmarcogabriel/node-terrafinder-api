@@ -1,30 +1,62 @@
-const { User } = require('../app/models/user')
+const repository = require('../repositories/user-repository')
 
-exports.index = async (req, res) => {
-  const users = await User.find()
-
-  res.status(200).json({ users })
+exports.index = async (_, res) => {
+  try {
+    const users = await repository.get()
+    
+    return res.status(200).json({ users })
+  } catch(error) {
+    return res.status(500).json({ error })
+  }
 }
 
 exports.post = async (req, res) => {
   const { name, email, password } = req.body
 
-  const user = new User()
-
-  user.name = name
-  user.email = email
-  user.password = password
-
-  await user.save()
-
-  res.status(201).json({ 
-    message: 'User created successfully.'
-  })
-
+  try {
+    await repository.post({ name, email, password })
+    
+    return res.status(201).json({ 
+      message: 'User created successfully.'
+    })
+  } catch (error) {
+    return res.status(500).json({ error})
+  }
 }
 
 exports.getById = async (req, res) => {
-  const user = await User.findById(req.params.id)
+  try {
+    const user = await repository.get(req.params.id)
+  
+    return res.status(200).json({ user })
+  } catch (error) {
+    return res.status(500).json({ error })
+  }
+}
 
-  res.status(200).json({ user })
+exports.update = async (req, res) => {
+  const { id } = req.params
+  const { name, email, password } = req.body
+
+  console.log(name, email, id)
+
+  try {
+    await repository.put({name, email, password}, id)
+
+    return res.status(200).json({ message: 'User updated successfully.' })
+  } catch(error) {
+    return res.status(500).json({ error})
+  }
+}
+
+exports.delete = async (req, res) => {
+  const { id } = req.params
+
+  try {
+    await repository.delete(id)
+
+    return res.status(200).json({ message: 'User deleted successfully.' })
+  } catch(error) {
+    return res.status(500).json({ error })
+  }
 }
