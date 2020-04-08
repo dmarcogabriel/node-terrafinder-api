@@ -1,109 +1,79 @@
-const Product = require('../app/models/product')
+const repository = require('../repositories/product-repository')
 
-exports.index = (req, res) => {
-  Product.find((err, products) => {
-    if (err) res.send(err)
+exports.index = async (req, res) => {
+  try {
+    const data = await repository.get()
 
-    res.status(200).json({
-      message:'Products returned.',
-      products
-    })
-  })
+    res.status(200).json(data)
+  }catch(err) {
+    res.send(err)
+  }
 }
 
-exports.post = (req, res) => {
+exports.post = async (req, res) => {
   const { name, price, description } = req.body
-  const product = new Product()
 
-  product.name = name
-  product.price = price
-  product.description = description
+  try {
+    await repository.post({ name, price, description })
 
-  product.save(error => {
-    if (error) 
-      res.status(500).json({ 
-        message: '[Error] failed to save product: ',
-        error, 
-      })
-
-    res.status(201).json({ message: 'Product created succesfully!' })
-  })
+    return res.status(201).json({ message: 'Product created succesfully!' })
+  }catch(error) {
+    return res.status(500).json({
+      message: '[Error] failed to save product',
+      error
+    })
+  }
 }
 
-exports.getById = (req, res) => {
+exports.getById = async (req, res) => {
   const { id } = req.params
 
-  Product.findById(id, (err, product) => {
-    if (err) 
-      res.status(500).json({
-        message: '[Error] Malformed id',
-        error: err,
-      })
+  try {
+    const product = await repository.get(id)
 
-    else if (!product) 
-      res.status(400).json({
-        message: 'Product not found',
-      })
-
-    else
-      res.status(200).json({
-        message: 'Product returned.',
-        product,
-      })
-  })
-}
-
-exports.put = (req, res) => {
-  const { id } = req.params
-
-  Product.findById(id, (err, product) => {
-    if (err) 
-      res.status(500).json({
-        message: '[Error] Malformed id',
-        error: err,
-      })
-
-    else if (!product) 
-      res.status(400).json({
-        message: 'Product not found',
-      })
-
-    else {
-      const { name, price, description } = req.body
-
-      product.name = name || product.name
-      product.price = price || product.price
-      product.description = description || product.description
-
-      product.save(error => {
-        if (error) 
-          res.status(500).json({
-            message: '[Error] Failed to update product',
-          })
-        else
-          res.status(200).json({
-            message: 'Product updated successfuly.'
-          })
+    if (!product) {
+      return res.status(400).json({
+        message: 'Product not Found'
       })
     }
-  })
+
+    return res.status(200).json({ product })
+  } catch(error) {
+
+    return res.status(500).json({
+      message: '[Error] Malformed id',
+      error,
+    })
+  }
 }
 
-exports.delete = (req, res) => {
+exports.put = async (req, res) => {
+  const { id } = req.params
+  const { name, price, description } = req.body
+
+  try {
+    await repository.put({ name, price, description }, id)
+
+    return res.status(200).json({ message : 'Product updated successfully.' })
+  } catch(error) {
+    return res.status(500).json({ 
+      message: '[Error] Failed to update product', 
+      error
+    })
+  }
+}
+
+exports.delete = async (req, res) => {
   const { id } = req.params
 
-  Product.findByIdAndRemove(id, (err, product) => {
-    if (err)
-      return res.status(500).json({
-        message: '[Error] failed to delete',
-        error: err
-      })
-  
-    const response = {
-      message: 'Product deleted successfuly',
-      productId: product.id,
-    }
+  try {
+    await repository.delete(id)
 
-    return res.status(200).json(response)
-  })
+    return res.status(200).json({ message: 'Product deleted successfuly' })
+  } catch(error) {
+    return res.status(500).json({
+      message: '[Error] failed to delete',
+      error
+    })
+  }
 }
