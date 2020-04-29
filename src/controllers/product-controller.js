@@ -56,8 +56,8 @@ exports.put = async (req, res) => {
 
     return res.status(200).json({message : 'Product updated successfully.'})
   } catch(error) {
-    return res.status(500).json({ 
-      message: '[Error] Failed to update product', 
+    return res.status(500).json({
+      message: '[Error] Failed to update product',
       error
     })
   }

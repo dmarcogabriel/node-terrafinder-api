@@ -9,11 +9,12 @@ const UserSchema = new Schema({
   signUpDate: {type: Date, default: Date.now()}
 })
 
-UserSchema.methods.generateHash = password => 
+UserSchema.methods.generateHash = password =>
   bcrypt.hashSync(password, bcrypt.genSaltSync(8))
 
-UserSchema.methods.validateHash = password => 
-  bcrypt.compareSync(password, this.password)
+UserSchema.methods.validateHash = function(password){
+  return bcrypt.compareSync(password, this.password)
+}
 
 
 module.exports = model('User', UserSchema)

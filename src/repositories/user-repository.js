@@ -10,6 +10,8 @@ exports.get = async (id = null) => {
 exports.post = async data => {
   const user = new User(data)
 
+  user.password = user.generateHash(data.password)
+
   await user.save()
 }
 
@@ -32,9 +34,11 @@ exports.delete = id => User.findOneAndRemove(id)
 exports.login = async (email, password) => {
   const user = await User.findOne({email})
 
-  if (!user) return null 
+  if (!user) return null
 
-  if (password !== user.password) return null
+  const userModel = new User(user)
+
+  if (!userModel.validateHash(password)) return null
 
   return user
 }

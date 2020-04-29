@@ -10,7 +10,7 @@ exports.get = async (id = null) => {
   return {products, total}
 }
 
-exports.post = async data => {  
+exports.post = async data => {
   const product = new Product(data)
 
   await product.save()
