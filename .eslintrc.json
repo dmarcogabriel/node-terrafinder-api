@@ -29,6 +29,7 @@
             "error",
             "never"
         ],
-        "global-require": "error"
+        "global-require": "error",
+        "object-curly-spacing": ["error", "never"]
     }
 }

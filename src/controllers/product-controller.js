@@ -11,12 +11,12 @@ exports.index = async (req, res) => {
 }
 
 exports.post = async (req, res) => {
-  const { name, price, description } = req.body
+  const {name, price, description} = req.body
 
   try {
-    await repository.post({ name, price, description })
+    await repository.post({name, price, description})
 
-    return res.status(201).json({ message: 'Product created succesfully!' })
+    return res.status(201).json({message: 'Product created succesfully!'})
   }catch(error) {
     return res.status(500).json({
       message: '[Error] failed to save product',
@@ -26,7 +26,7 @@ exports.post = async (req, res) => {
 }
 
 exports.getById = async (req, res) => {
-  const { id } = req.params
+  const {id} = req.params
 
   try {
     const product = await repository.get(id)
@@ -37,7 +37,7 @@ exports.getById = async (req, res) => {
       })
     }
 
-    return res.status(200).json({ product })
+    return res.status(200).json({product})
   } catch(error) {
 
     return res.status(500).json({
@@ -48,13 +48,13 @@ exports.getById = async (req, res) => {
 }
 
 exports.put = async (req, res) => {
-  const { id } = req.params
-  const { name, price, description } = req.body
+  const {id} = req.params
+  const {name, price, description} = req.body
 
   try {
-    await repository.put({ name, price, description }, id)
+    await repository.put({name, price, description}, id)
 
-    return res.status(200).json({ message : 'Product updated successfully.' })
+    return res.status(200).json({message : 'Product updated successfully.'})
   } catch(error) {
     return res.status(500).json({ 
       message: '[Error] Failed to update product', 
@@ -64,12 +64,12 @@ exports.put = async (req, res) => {
 }
 
 exports.delete = async (req, res) => {
-  const { id } = req.params
+  const {id} = req.params
 
   try {
     await repository.delete(id)
 
-    return res.status(200).json({ message: 'Product deleted successfuly' })
+    return res.status(200).json({message: 'Product deleted successfuly'})
   } catch(error) {
     return res.status(500).json({
       message: '[Error] failed to delete',

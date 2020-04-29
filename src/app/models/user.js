@@ -1,7 +1,19 @@
-const { Schema, model } = require('mongoose')
+const bcrypt = require('bcrypt')
+const {Schema, model} = require('mongoose')
 
-module.exports = model('User', new Schema({
-  name: String,
-  email: String,
-  password: String
-}))
+const UserSchema = new Schema({
+  name: {type: String, required: true},
+  email: {type: String, required: true},
+  password: {type: String, required: true},
+  isDeleted: {type: Boolean, default: false},
+  signUpDate: {type: Date, default: Date.now()}
+})
+
+UserSchema.methods.generateHash = password => 
+  bcrypt.hashSync(password, bcrypt.genSaltSync(8))
+
+UserSchema.methods.validateHash = password => 
+  bcrypt.compareSync(password, this.password)
+
+
+module.exports = model('User', UserSchema)

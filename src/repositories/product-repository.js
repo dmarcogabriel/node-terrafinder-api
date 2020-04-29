@@ -7,7 +7,7 @@ exports.get = async (id = null) => {
   const products = await Product.find()
   const total = await Product.count()
 
-  return { products, total }
+  return {products, total}
 }
 
 exports.post = async data => {  
@@ -16,7 +16,7 @@ exports.post = async data => {
   await product.save()
 }
 
-exports.put = ({ name, description, price }, id) => {
+exports.put = ({name, description, price}, id) => {
   const update = {
     $set: {
       name,
@@ -25,7 +25,7 @@ exports.put = ({ name, description, price }, id) => {
     }
   }
 
-  const options = { omitUndefined: true }
+  const options = {omitUndefined: true}
 
   return Product.findByIdAndUpdate(id, update, options)
 }
