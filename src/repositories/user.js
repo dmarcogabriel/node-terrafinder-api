@@ -1,4 +1,7 @@
-const User = require('../app/models/user')
+require('dotenv/config')
+
+const User = require('../app/models/User')
+const jwt = require('jsonwebtoken')
 
 exports.get = async (id = null) => {
   if (id) {
@@ -40,5 +43,8 @@ exports.login = async (email, password) => {
 
   if (!userModel.validateHash(password)) return null
 
-  return user
+  const id = userModel._id
+  const token = jwt.sign({id}, process.env.SECRET, {expiresIn: 60})
+
+  return token
 }

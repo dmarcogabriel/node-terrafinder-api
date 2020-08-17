@@ -1,4 +1,4 @@
-const repository = require('../repositories/user-repository')
+const repository = require('../repositories/user')
 
 exports.index = async (_, res) => {
   try {

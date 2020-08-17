@@ -1,4 +1,4 @@
-const Product = require('../app/models/product')
+const Product = require('../app/models/Product')
 
 exports.get = async (id = null) => {
   if (id) {
