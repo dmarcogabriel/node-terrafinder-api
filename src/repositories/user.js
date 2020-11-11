@@ -44,7 +44,7 @@ exports.login = async (email, password) => {
   if (!userModel.validateHash(password)) return null
 
   const id = userModel._id
-  const token = jwt.sign({id}, process.env.SECRET, {expiresIn: 60})
+  const token = jwt.sign({id}, process.env.SECRET, {expiresIn: 60000})
 
-  return token
+  return {token, id}
 }

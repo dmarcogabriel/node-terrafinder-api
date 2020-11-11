@@ -1,40 +1,53 @@
 {
   "name": "node-express",
   "version": "1.0.0",
-  "description": "Projeto teste com Node.js e Express",
-  "main": "src/server.js",
+  "description": "This is a API for Terrafinder app",
+  "main": "src/index.js",
   "scripts": {
-    "start": "node src/server.js",
+    "start": "cross-env NODE_ENV=production node",
     "dev": "nodemon",
-    "test": "mocha './**/*.spec.js'",
+    "test": "cross-env NODE_ENV=test jest --watchAll",
+    "test:cov": "cross-env NODE_ENV=test jest --coverage",
     "lint": "eslint ./src --fix",
-    "lint:watch": "esw --quiet -w",
-    "log-server": "json-server db.json --port 3004"
+    "lint:watch": "esw --quiet -w"
   },
   "keywords": [
     "express",
-    "node"
+    "node",
+    "nodemon",
+    "bcrypt",
+    "body-parser",
+    "compression",
+    "cors",
+    "dotenv",
+    "helmet",
+    "jsonwebtoken",
+    "mongoose"
   ],
   "author": "Gabriel De Marco",
   "license": "ISC",
   "dependencies": {
     "bcrypt": "^4.0.1",
     "body-parser": "1.19.0",
+    "compression": "^1.7.4",
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",
     "eslint-watch": "^6.0.1",
     "express": "4.17.1",
+    "helmet": "^4.2.0",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.9.4"
   },
   "devDependencies": {
+    "cross-env": "^7.0.2",
     "eslint": "^6.8.0",
     "husky": "^4.2.5",
-    "json-server": "^0.16.1",
+    "hygen": "^6.0.4",
+    "jest": "^26.6.3",
     "lint-staged": "^10.2.0",
-    "mocha": "^7.1.0",
     "nodemon": "2.0.2",
-    "prettier": "^2.0.2"
+    "prettier": "^2.0.2",
+    "supertest": "^6.0.1"
   },
   "husky": {
     "hooks": {
@@ -42,6 +55,6 @@
     }
   },
   "lint-staged": {
-    "./src/*.js": "npm run lint"
+    "*.js": "eslint src --fix"
   }
 }
