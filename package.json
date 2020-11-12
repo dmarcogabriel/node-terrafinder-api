@@ -9,7 +9,8 @@
     "test": "cross-env NODE_ENV=test jest --watchAll",
     "test:cov": "cross-env NODE_ENV=test jest --coverage",
     "lint": "eslint ./src --fix",
-    "lint:watch": "esw --quiet -w"
+    "lint:watch": "esw --quiet -w",
+    "generate": "hygen"
   },
   "keywords": [
     "express",

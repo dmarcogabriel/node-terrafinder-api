@@ -9,7 +9,8 @@ const UserSchema = new Schema({
   email: {type: String, required: true},
   password: {type: String, required: true},
   isDeleted: {type: Boolean, default: false},
-  signUpDate: {type: Date, default: Date.now()}
+  updatedAt: {type: Date, default: Date.now()},
+  createdAt: {type: Date, default: Date.now()},
 })
 
 UserSchema.methods.generateHash = password =>
