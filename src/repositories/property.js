@@ -1,17 +1,22 @@
 const Property = require('../app/models/Property')
-const {saveFileOnStorage} = require('../services/fileUpload')
+const { saveFileOnStorage } = require('../services/fileUpload')
+const { filtersObj } = require('../utils/filters')
 
-exports.get = async (id = null) => {
-  if (id) {
-    return Property.findById(id).populate('user')
-  }
+exports.get = async (query) => {
   const properties = await Property.find()
-  const total = await Property.count()
+  const total = await Property.countDocuments()
 
-  return {properties, total}
+  if (Object.keys(query).length) {
+    const filteredProperties = Object.keys(query)
+      .map((key) => properties.filter((property) => filtersObj(property[key])))
+
+    return { properties: filteredProperties }
+  }
+
+  return { properties, total } // todo: ver o que está vindo no total
 }
 
-exports.create = async data => {
+exports.create = async (data) => {
   const property = new Property(data)
 
   await property.save()
@@ -19,16 +24,14 @@ exports.create = async data => {
   return property
 }
 
-exports.getByUserId = async (userId) => {
-  return Property.where('user', userId)
-}
+exports.getByUserId = async (userId) => Property.where('user', userId)
 
-exports.delete = async id => Property.findByIdAndRemove(id)
+exports.delete = async (id) => Property.findByIdAndRemove(id)
 
 exports.savePhotos = async (files, id) => {
   const property = await Property.findById(id)
 
-  Object.keys(files).forEach(async key => {
+  Object.keys(files).forEach(async (key) => {
     const fileName = saveFileOnStorage(files[key])
 
     property.photos = [...property.photos, fileName]
@@ -38,4 +41,4 @@ exports.savePhotos = async (files, id) => {
   await property.save()
 }
 
-exports.getById = async id => Property.findById(id)
+exports.getById = async (id) => Property.findById(id).populate('user')

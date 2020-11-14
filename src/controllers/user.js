@@ -4,9 +4,9 @@ exports.index = async (_, res) => {
   try {
     const users = await repository.get()
 
-    return res.status(200).json({users})
-  } catch(error) {
-    return res.status(500).json({error})
+    return res.status(200).json({ users })
+  } catch (error) {
+    return res.status(500).json({ error })
   }
 }
 
@@ -15,10 +15,10 @@ exports.post = async (req, res) => {
     await repository.post(req.body.values)
 
     return res.status(201).json({
-      message: 'User created successfully.'
+      message: 'User created successfully.',
     })
   } catch (error) {
-    return res.status(500).json({error})
+    return res.status(500).json({ error })
   }
 }
 
@@ -26,9 +26,9 @@ exports.getById = async (req, res) => {
   try {
     const user = await repository.get(req.params.id)
 
-    return res.status(200).json({user})
+    return res.status(200).json({ user })
   } catch (error) {
-    return res.status(500).json({error})
+    return res.status(500).json({ error })
   }
 }
 
@@ -58,4 +58,3 @@ exports.getById = async (req, res) => {
 //     return res.status(500).json({error})
 //   }
 // }
-

@@ -1,7 +1,7 @@
 require('dotenv/config')
 
-const User = require('../app/models/User')
 const jwt = require('jsonwebtoken')
+const User = require('../app/models/User')
 
 exports.get = async (id = null) => {
   if (id) {
@@ -10,7 +10,7 @@ exports.get = async (id = null) => {
   return User.find()
 }
 
-exports.post = async data => {
+exports.post = async (data) => {
   const user = new User(data)
 
   user.password = user.generateHash(data.password)
@@ -18,24 +18,24 @@ exports.post = async data => {
   await user.save()
 }
 
-exports.put = ({name, password, email}, id) => {
+exports.put = ({ name, password, email }, id) => {
   const update = {
     $set: {
       name,
       password,
-      email
-    }
+      email,
+    },
   }
 
-  const options = {omitUndefined: true}
+  const options = { omitUndefined: true }
 
   return User.findByIdAndUpdate(id, update, options)
 }
 
-exports.delete = id => User.findOneAndRemove(id)
+exports.delete = (id) => User.findOneAndRemove(id)
 
 exports.login = async (email, password) => {
-  const user = await User.findOne({email})
+  const user = await User.findOne({ email })
 
   if (!user) return null
 
@@ -44,7 +44,7 @@ exports.login = async (email, password) => {
   if (!userModel.validateHash(password)) return null
 
   const id = userModel._id
-  const token = jwt.sign({id}, process.env.SECRET, {expiresIn: 60000})
+  const token = jwt.sign({ id }, process.env.SECRET, { expiresIn: 60000 })
 
-  return {token, id}
+  return { token, id }
 }

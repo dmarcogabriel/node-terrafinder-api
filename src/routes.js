@@ -1,4 +1,4 @@
-const {Router} = require('express')
+const { Router } = require('express')
 const authService = require('./services/auth')
 const authController = require('./controllers/auth')
 const userController = require('./controllers/user')
@@ -6,7 +6,7 @@ const propertyController = require('./controllers/property')
 
 const routes = Router()
 
-routes.get('/', (_, res) => res.status(200).json({message:'Route test Ok'}))
+routes.get('/', (_, res) => res.status(200).json({ message: 'Route test Ok' }))
 
 routes.post('/login', authController.login)
 

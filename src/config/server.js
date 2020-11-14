@@ -9,10 +9,10 @@ const app = express()
 
 app.use(helmet())
 app.use(compression())
-app.use(bodyParser.urlencoded({extended: true}))
+app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
 app.use(cors())
-app.use(fileUpload({createParentPath: true}))
+app.use(fileUpload({ createParentPath: true }))
 app.use('/images', express.static(`${__dirname}/../storage`))
 
 module.exports = app

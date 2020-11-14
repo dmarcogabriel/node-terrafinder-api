@@ -5,7 +5,7 @@ const setFileName = (fileName) => {
   return `${new Date().getTime()}${extension}` // > 1246548321.png
 }
 
-module.exports= {
+module.exports = {
   saveFileOnStorage: (file) => {
     const fileName = setFileName(file.name)
     const path = `${storageDir}/${fileName}`
