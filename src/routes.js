@@ -1,8 +1,8 @@
 const {Router} = require('express')
-const authController = require('./controllers/auth')
 const authService = require('./services/auth')
+const authController = require('./controllers/auth')
 const userController = require('./controllers/user')
-const adsConteroller = require('./controllers/property')
+const propertyController = require('./controllers/property')
 
 const routes = Router()
 
@@ -14,9 +14,10 @@ routes.post('/users', userController.post)
 routes.get('/users', authService.authorize, userController.index)
 routes.get('/users/:id', authService.authorize, userController.getById)
 
-routes.post('/ads', adsConteroller.post)
-routes.get('/ads', adsConteroller.getAll)
-routes.get('/ads/user/:userId', adsConteroller.getAllByUserId)
-routes.get('/ads/:id', adsConteroller.getById)
+routes.post('/properties', propertyController.post)
+routes.get('/properties', propertyController.getAll)
+routes.get('/property/:id', propertyController.getById)
+routes.get('/properties/user/:userId', propertyController.getAllByUserId)
+routes.post('/property/upload-photos/:id', propertyController.uploadFiles)
 
 module.exports = routes

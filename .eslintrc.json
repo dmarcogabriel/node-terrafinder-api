@@ -33,6 +33,7 @@
         "object-curly-spacing": ["error", "never"],
         "no-trailing-spaces": "error",
         "no-multiple-empty-lines": ["error", {"max": 2, "maxEOF": 1}],
-        "space-in-parens": ["error", "never"]
+        "space-in-parens": ["error", "never"],
+        "no-console": "warn"
     }
 }

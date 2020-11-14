@@ -9,6 +9,7 @@ const UserSchema = new Schema({
   email: {type: String, required: true},
   password: {type: String, required: true},
   isDeleted: {type: Boolean, default: false},
+  avatar: {type: String, required: false},
   updatedAt: {type: Date, default: Date.now()},
   createdAt: {type: Date, default: Date.now()},
 })
@@ -19,6 +20,5 @@ UserSchema.methods.generateHash = password =>
 UserSchema.methods.validateHash = function(password){
   return bcrypt.compareSync(password, this.password)
 }
-
 
 module.exports = model('User', UserSchema)

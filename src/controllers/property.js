@@ -2,9 +2,10 @@ const repository = require('../repositories/property')
 
 exports.post = async (req, res) => {
   try {
-    await repository.create(req.body)
+    const property = await repository.create(req.body)
 
-    return res.status(201).json({message: 'Anúncio criado com sucesso!'})
+    return res.status(201)
+      .json({message: 'Anúncio criado com sucesso!', property})
   }catch(error) {
     return res.status(500).json({
       message: '[Error] failed to save property',
@@ -27,15 +28,15 @@ exports.getById = async (req, res) => {
   const {id} = req.params
 
   try {
-    const product = await repository.get(id)
+    const property = await repository.get(id)
 
-    if (!product) {
+    if (!property) {
       return res.status(400).json({
         message: 'Propriedade não encontrada'
       })
     }
 
-    return res.status(200).json({product})
+    return res.status(200).json({property})
   } catch(error) {
 
     return res.status(500).json({
@@ -49,20 +50,37 @@ exports.getAllByUserId = async (req, res) => {
   const {userId} = req.params
 
   try {
-    const ads = await repository.getByUserId(userId)
+    const properties = await repository.getByUserId(userId)
 
-    if (!ads) {
+    if (!properties) {
       return res.status(400).json({
         message: 'Propriedade não encontrada'
       })
     }
 
-    return res.status(200).json({ads})
+    return res.status(200).json({properties})
   } catch(error) {
 
     return res.status(500).json({
       message: '[Error] Malformed id',
       error,
+    })
+  }
+}
+
+exports.uploadFiles = async (req, res) => {
+  if (!req.files && !req.params.id)
+    return res.status(400).json({message: 'Nenhuma imagem foi selecionada'})
+
+  try {
+    await repository.savePhotos(req.files, req.params.id)
+
+    res.status(201).json({
+      message: 'Imagem adicionada com sucesso'
+    })
+  } catch (error) {
+    res.status(500).json({
+      message: 'Ocorreu um erro ao fazer upload'
     })
   }
 }

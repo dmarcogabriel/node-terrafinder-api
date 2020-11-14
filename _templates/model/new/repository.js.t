@@ -20,12 +20,16 @@ exports.create = async data => {
   await <%= name %>.save()
 }
 
-exports.put = (data, id) => {
-  const update = {$set: {data}}
+exports.put = async (data, id) => {
+  const <%= name %> = await <%= h.inflection.capitalize(name) %>.findById(id)
 
-  const options = {omitUndefined: true}
+  /**
+   * Here define data to be updated
+   * ex: <%= name %>.name = 'john mayer'
+   */
+  <%= name %>.updatedAt = new Date().now()
 
-  return <%= h.inflection.capitalize(name) %>.findByIdAndUpdate(id, update, options)
+  await <%= name %>.save()
 }
 
 exports.delete = id => <%= h.inflection.capitalize(name) %>.findByIdAndRemove(id)
