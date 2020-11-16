@@ -32,29 +32,21 @@ exports.getById = async (req, res) => {
   }
 }
 
-// exports.update = async (req, res) => {
-//   const {id} = req.params
-//   const {name, email, password} = req.body
+exports.uploadFile = async (req, res) => {
+  if (!req.files && !req.params.id) {
+    return res.status(400).json({ message: 'Nenhuma imagem foi selecionada' })
+  }
 
-//   console.log(name, email, id)
+  try {
+    const avatar = await repository.saveAvatar(req.files, req.params.id)
 
-//   try {
-//     await repository.put({name, email, password}, id)
-
-//     return res.status(200).json({message: 'User updated successfully.'})
-//   } catch(error) {
-//     return res.status(500).json({error})
-//   }
-// }
-
-// exports.delete = async (req, res) => {
-//   const {id} = req.params
-
-//   try {
-//     await repository.delete(id)
-
-//     return res.status(200).json({message: 'User deleted successfully.'})
-//   } catch(error) {
-//     return res.status(500).json({error})
-//   }
-// }
+    return res.status(201).json({
+      message: 'Imagem adicionada com sucesso',
+      avatar,
+    })
+  } catch (error) {
+    return res.status(500).json({
+      message: 'Ocorreu um erro ao fazer upload',
+    })
+  }
+}

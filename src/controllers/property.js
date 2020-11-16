@@ -83,3 +83,21 @@ exports.uploadFiles = async (req, res) => {
     })
   }
 }
+
+exports.delete = async (req, res) => {
+  if (!req.params.id) {
+    return res.status(400).json({ message: 'Falta o parametro ID' })
+  }
+
+  try {
+    await repository.delete(req.params.id)
+
+    return res.status(201).json({
+      message: 'Deletado com sucesso',
+    })
+  } catch (error) {
+    return res.status(500).json({
+      message: 'Ocorreu um erro ao deletar',
+    })
+  }
+}

@@ -4,7 +4,7 @@
   "description": "This is a API for Terrafinder app",
   "main": "src/index.js",
   "scripts": {
-    "start": "cross-env NODE_ENV=production node",
+    "start": "cross-env NODE_ENV=production node src/index.js",
     "dev": "nodemon",
     "test": "cross-env NODE_ENV=test jest --watchAll",
     "test:cov": "cross-env NODE_ENV=test jest --coverage",

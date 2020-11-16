@@ -1,19 +1,18 @@
 const Property = require('../app/models/Property')
 const { saveFileOnStorage } = require('../services/fileUpload')
-const { filtersObj } = require('../utils/filters')
+const { propertyQueryParse } = require('../utils/queryParse')
 
 exports.get = async (query) => {
   const properties = await Property.find()
   const total = await Property.countDocuments()
 
   if (Object.keys(query).length) {
-    const filteredProperties = Object.keys(query)
-      .map((key) => properties.filter((property) => filtersObj(property[key])))
+    const filtered = await Property.find(propertyQueryParse(query))
 
-    return { properties: filteredProperties }
+    return { properties: filtered }
   }
 
-  return { properties, total } // todo: ver o que está vindo no total
+  return { properties, total }
 }
 
 exports.create = async (data) => {

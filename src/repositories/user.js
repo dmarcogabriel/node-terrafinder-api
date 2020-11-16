@@ -2,6 +2,7 @@ require('dotenv/config')
 
 const jwt = require('jsonwebtoken')
 const User = require('../app/models/User')
+const { saveFileOnStorage } = require('../services/fileUpload')
 
 exports.get = async (id = null) => {
   if (id) {
@@ -47,4 +48,15 @@ exports.login = async (email, password) => {
   const token = jwt.sign({ id }, process.env.SECRET, { expiresIn: 60000 })
 
   return { token, id }
+}
+
+exports.saveAvatar = async ({ avatar }, id) => {
+  const user = await User.findById(id)
+  const fileName = saveFileOnStorage(avatar)
+
+  user.avatar = fileName
+  user.updatedAt = Date.now()
+
+  await user.save()
+  return user.avatar
 }
