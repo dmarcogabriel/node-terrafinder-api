@@ -1,13 +1,15 @@
 version: 2.1
 
-jobs:
-  build:
-    docker:
-      - image: circleci/node:latest
+orbs:
+  node: circleci/node@4.1.0 # orb version
 
+jobs:
+  test:
+    docker:
+      - image: cimg/node:14.15.0
+        auth:
+          username: dmarcogabriel
+          password: gabriel@16
     steps:
       - checkout
-
-workflows:
-  deploy:
-    - build
+      - node/install-packages
