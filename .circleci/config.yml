@@ -3,7 +3,8 @@ version: 2.1
 jobs:
   build:
     docker:
-      -image: ircleci/node:latest
+      -image: circleci/node:latest
+
     steps:
       - checkout
       - run: echo "This is the build job"
