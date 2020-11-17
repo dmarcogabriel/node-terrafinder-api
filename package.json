@@ -5,9 +5,9 @@
   "main": "src/index.js",
   "scripts": {
     "dev": "nodemon",
-    "start": "cross-env NODE_ENV=production node src/index.js",
-    "test": "cross-env NODE_ENV=test jest --watchAll",
-    "test:cov": "cross-env NODE_ENV=test jest --coverage",
+    "start": "node src/index.js",
+    "test": "jest --watchAll",
+    "test:cov": "jest --coverage",
     "lint": "eslint ./src --fix",
     "lint:watch": "esw --quiet -w",
     "generate": "hygen"
