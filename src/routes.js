@@ -19,11 +19,19 @@ routes.put(
   userController.uploadFile,
 )
 
-routes.post('/properties', propertyController.post)
+routes.post('/properties', authService.authorize, propertyController.post)
 routes.get('/properties', propertyController.getAll)
 routes.get('/property/:id', propertyController.getById)
 routes.get('/properties/user/:userId', propertyController.getAllByUserId)
-routes.post('/property/upload-photos/:id', propertyController.uploadFiles)
-routes.delete('/properties/:id', propertyController.delete)
+routes.post(
+  '/property/upload-photos/:id',
+  authService.authorize,
+  propertyController.uploadFiles,
+)
+routes.delete(
+  '/properties/:id',
+  authService.authorize,
+  propertyController.delete,
+)
 
 module.exports = routes
