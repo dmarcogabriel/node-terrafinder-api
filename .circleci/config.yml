@@ -4,4 +4,8 @@ orbs:
 workflows:
   node-tests:
     jobs:
+      build:
+        docker:
+          -image: ircleci/node:latest
+
       - node/test
