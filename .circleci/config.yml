@@ -7,8 +7,7 @@ jobs:
 
     steps:
       - checkout
-      - run: echo "This is the build job"
 
 workflows:
-  build_app:
+  deploy:
     - build
