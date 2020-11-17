@@ -1,11 +1,13 @@
 version: 2.1
-orbs:
-  node: circleci/node@3.0.0
-workflows:
-  node-tests:
-    jobs:
-      build:
-        docker:
-          -image: ircleci/node:latest
 
-      - node/test
+jobs:
+  build:
+    docker:
+      -image: ircleci/node:latest
+    steps:
+      - checkout
+      - run: echo "This is the build job"
+
+workflows:
+  build_app:
+    - build
