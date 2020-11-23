@@ -12,7 +12,7 @@ exports.index = async (_, res) => {
 
 exports.post = async (req, res) => {
   try {
-    await repository.post(req.body.values)
+    await repository.post(req.body)
 
     return res.status(201).json({
       message: 'User created successfully.',

@@ -1,18 +1,9 @@
-require('dotenv/config')
-const initDatabase = require('./config/database')
-const app = require('./config/server')
-const routes = require('./routes')
+const server = require('./server')
 
-initDatabase()
-  .then(() => {
-    app.use('/api', routes)
+const start = async () => {
+  const app = await server.createServer('terrafinder')
 
-    const PORT = process.env.PORT || 8000
+  app.listen(process.env.PORT || 8000)
+}
 
-    app.listen(PORT, () => {
-      console.log(`server runing on port ${PORT}`)
-    })
-  }).catch((err) => {
-    console.error('Erro ao conectar com o MongoDB')
-    console.log(err)
-  })
+start()

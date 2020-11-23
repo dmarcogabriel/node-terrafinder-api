@@ -2,6 +2,14 @@ const Property = require('../app/models/Property')
 const { saveFileOnStorage } = require('../services/fileUpload')
 const { propertyQueryParse } = require('../utils/queryParse')
 
+exports.create = async (data) => {
+  const property = new Property(data)
+
+  await property.save()
+
+  return property
+}
+
 exports.get = async (query) => {
   const properties = await Property.find()
   const total = await Property.countDocuments()
@@ -15,17 +23,9 @@ exports.get = async (query) => {
   return { properties, total }
 }
 
-exports.create = async (data) => {
-  const property = new Property(data)
-
-  await property.save()
-
-  return property
-}
+exports.getById = async (id) => Property.findById(id).populate('user')
 
 exports.getByUserId = async (userId) => Property.where('user', userId)
-
-exports.delete = async (id) => Property.findByIdAndRemove(id)
 
 exports.savePhotos = async (files, id) => {
   const property = await Property.findById(id)
@@ -39,5 +39,3 @@ exports.savePhotos = async (files, id) => {
 
   await property.save()
 }
-
-exports.getById = async (id) => Property.findById(id).populate('user')

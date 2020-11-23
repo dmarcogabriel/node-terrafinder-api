@@ -19,20 +19,6 @@ exports.post = async (data) => {
   await user.save()
 }
 
-exports.put = ({ name, password, email }, id) => {
-  const update = {
-    $set: {
-      name,
-      password,
-      email,
-    },
-  }
-
-  const options = { omitUndefined: true }
-
-  return User.findByIdAndUpdate(id, update, options)
-}
-
 exports.delete = (id) => User.findOneAndRemove(id)
 
 exports.login = async (email, password) => {

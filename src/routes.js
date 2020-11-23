@@ -6,10 +6,9 @@ const propertyController = require('./controllers/property')
 
 const routes = Router()
 
-routes.get('/', (_, res) => res.status(200).json({ message: 'Route test Ok' }))
-
 routes.post('/login', authController.login)
 
+// User
 routes.post('/users', userController.post)
 routes.get('/users', authService.authorize, userController.index)
 routes.get('/users/:id', authService.authorize, userController.getById)
@@ -19,19 +18,15 @@ routes.put(
   userController.uploadFile,
 )
 
+// Property
 routes.post('/properties', authService.authorize, propertyController.post)
 routes.get('/properties', propertyController.getAll)
 routes.get('/property/:id', propertyController.getById)
 routes.get('/properties/user/:userId', propertyController.getAllByUserId)
-routes.post(
+routes.put(
   '/property/upload-photos/:id',
   authService.authorize,
   propertyController.uploadFiles,
-)
-routes.delete(
-  '/properties/:id',
-  authService.authorize,
-  propertyController.delete,
 )
 
 module.exports = routes

@@ -8,8 +8,8 @@ const UserSchema = new Schema({
   cpf: { type: String, required: true },
   email: { type: String, required: true },
   password: { type: String, required: true },
-  isDeleted: { type: Boolean, default: false },
   avatar: { type: String, required: false },
+  isDeleted: { type: Boolean, default: false },
   updatedAt: { type: Date, default: Date.now() },
   createdAt: { type: Date, default: Date.now() },
 })

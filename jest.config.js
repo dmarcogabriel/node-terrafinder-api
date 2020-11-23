@@ -1,4 +1,6 @@
 module.exports = {
   testEnvironment: 'node',
-  coveragePathIgnorePatterns: ['/node_modules/']
+  clearMocks: true,
+  coverageProvider: 'v8',
+  setupFilesAfterEnv: ['<rootDir>/src/config/tests/setupTests.js'],
 }
