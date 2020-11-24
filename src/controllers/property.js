@@ -51,7 +51,7 @@ exports.getAllByUserId = async (req, res) => {
   try {
     const properties = await repository.getByUserId(userId)
 
-    if (!properties) {
+    if (!properties.length) {
       return res.status(400).json({
         message: 'Propriedade não encontrada',
       })

@@ -17,6 +17,8 @@ exports.post = async (data) => {
   user.password = user.generateHash(data.password)
 
   await user.save()
+
+  return user._id
 }
 
 exports.delete = (id) => User.findOneAndRemove(id)

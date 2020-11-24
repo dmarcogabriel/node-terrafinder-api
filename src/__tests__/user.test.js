@@ -51,12 +51,14 @@ describe('User Tests', () => {
       expect(res.status).toEqual(200)
     })
 
-    // it('should fail to get all users', async () => {
-    //   const res = await request.get('/api/users')
-    //     .set({ 'x-access-token': token })
+    it('should fail to get all users', async () => {
+      const res = await request.get('/api/users')
+        .set({ 'x-access-token': 'test' })
 
-    //   expect(res.status).toEqual(200)
-    // })
+      expect(res.status).toEqual(401)
+      expect(res.body.auth).toEqual(false)
+      expect(res.body.message).toEqual('Token inválido')
+    })
 
     it('should get user by id', async () => {
       const res = await request.get(`/api/users/${userId}`)

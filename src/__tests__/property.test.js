@@ -50,6 +50,20 @@ describe('Property Tests', () => {
       expect(res.status).toEqual(200)
       expect(res.body.property).toBeTruthy()
     })
+
+    it('should fail to get property by id', async () => {
+      const res = await request.get('/api/property/5faeb09d07fc324f5470c128')
+
+      expect(res.status).toEqual(400)
+      expect(res.body.message).toEqual('Propriedade não encontrada')
+    })
+
+    it('should fail to get property by id', async () => {
+      const res = await request.get('/api/property/123')
+
+      expect(res.status).toEqual(500)
+      expect(res.body.message).toEqual('[Error] Malformed id')
+    })
   })
 
   describe('Private routes', () => {
@@ -79,7 +93,7 @@ describe('Property Tests', () => {
       expect(res.body.properties).toBeTruthy()
     })
 
-    it('should fail to list properties by user id', async () => {
+    it('should fail to list properties by user id (malformed id)', async () => {
       const res = await request.get('/api/properties/user/123')
         .set({ 'x-access-token': token })
 
@@ -87,16 +101,13 @@ describe('Property Tests', () => {
       expect(res.body.message).toEqual('[Error] Malformed id')
     })
 
-    // it('should upload files to property', async () => {
-    //   const res = await request
-    //  .put(`/api/property/upload-photos/${propertyId}`)
-    //     .attach('photo', fileMock)
-    //     .set({ 'x-access-token': token })
-    //     .set({ 'content-type': 'application/multipart/form-data' })
+    it('should fail to list properties by user id (wrong id)', async () => {
+      const res = await request
+        .get('/api/properties/user/5fac3be65a0bd202c2c48ea1')
+        .set({ 'x-access-token': token })
 
-    //   expect(res.status).toEqual(200)
-    //   // expect(res.status).toEqual(500)
-    //   // expect(res.body.message).toEqual('[Error] Malformed id')
-    // })
+      expect(res.status).toEqual(400)
+      expect(res.body.message).toEqual('Propriedade não encontrada')
+    })
   })
 })
