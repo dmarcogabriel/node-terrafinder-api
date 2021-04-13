@@ -5,9 +5,7 @@ const routes = require('./routes')
 
 const createServer = async (dbName) => {
   await database.connect(dbName)
-
   server.use('/api', routes)
-
   return server
 }
 

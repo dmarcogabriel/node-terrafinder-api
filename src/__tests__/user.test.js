@@ -1,7 +1,7 @@
 const supertest = require('supertest')
 // const createJWKSMock = require('mock-jwks')
 const app = require('../server')
-// const UserModel = require('../app/models/User')
+// const UserModel = require('../models/User')
 // const {TokenExpiredError} = require('jsonwebtoken')
 const userMock = require('../config/tests/userMock')
 

@@ -14,7 +14,6 @@ const connect = async (dbName) => mongoose.connect(
 const dropCollections = async () => {
   const collectionsToRemove = COLLECTIONS
     .map((collectionName) => mongoose.connection.dropCollection(collectionName))
-
   await Promise.all(collectionsToRemove)
 }
 

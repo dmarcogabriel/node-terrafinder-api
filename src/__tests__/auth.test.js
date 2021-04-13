@@ -1,6 +1,6 @@
 const supertest = require('supertest')
 const app = require('../server')
-const User = require('../app/models/User')
+const User = require('../models/User')
 
 let request
 let userId
