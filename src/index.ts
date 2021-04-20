@@ -1,7 +1,7 @@
-const server = require('./server')
+import { createServer } from './server'
 
 const start = async () => {
-  const app = await server.createServer('terrafinder')
+  const app = await createServer('terrafinder')
   const port = process.env.PORT || 8000
 
   app.listen(port, () => {

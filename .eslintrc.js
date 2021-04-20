@@ -7,6 +7,8 @@ module.exports = {
   },
   extends: [
     'airbnb-base',
+    'plugin:@typescript-eslint/eslint-recommended',
+    'plugin:@typescript-eslint/recommended',
   ],
   globals: {
     Atomics: 'readonly',
@@ -18,7 +20,7 @@ module.exports = {
   rules: {
     'no-underscore-dangle': 'off',
     semi: ['error', 'never'],
-    'max-len': ['error', { code: 80 }],
+    'max-len': ['error', { code: 100 }],
     'func-names': 'off',
     'import/no-extraneous-dependencies': [
       'error',
@@ -29,5 +31,6 @@ module.exports = {
           '**/tests/**',
         ],
       }],
+    'import/prefer-default-export': 'off',
   },
 }
