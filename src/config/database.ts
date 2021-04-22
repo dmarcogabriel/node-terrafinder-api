@@ -5,10 +5,13 @@ const COLLECTIONS = [
   'properties',
 ]
 
-const connect = async (dbName: string): Promise<typeof mongoose> => mongoose.connect(
-  `${process.env.DB_URL}/${dbName}?retryWrites=true&w=majority`,
-  { useNewUrlParser: true, useUnifiedTopology: true },
-)
+const connect = async (dbName: string): Promise<typeof mongoose> => {
+  console.log(`connecting to database: ${dbName}`)
+  return mongoose.connect(
+    `${process.env.DB_URL}/${dbName}?retryWrites=true&w=majority`,
+    { useNewUrlParser: true, useUnifiedTopology: true },
+  )
+}
 
 const dropCollections = async (): Promise<void> => {
   const collectionsToRemove = COLLECTIONS
