@@ -1,4 +1,5 @@
 {
+  "files": ["src/**/*.ts"],
   "compilerOptions": {
     "outDir": "dist",
     "allowJs": true,
@@ -6,8 +7,9 @@
     "noImplicitAny": true,
     "moduleResolution": "node",
     "esModuleInterop": true,
+    "skipLibCheck": true,
     "module": "commonjs",
     "baseUrl": "src",
+    "rootDir": "src"
   },
-  "include": ["src/**/*"]
 }
