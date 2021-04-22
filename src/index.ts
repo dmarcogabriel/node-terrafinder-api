@@ -1,9 +1,9 @@
-import { createServer } from './server'
+import { startServer } from './server'
 
 const { PORT, DB_NAME } = process.env
 
 const start = async () => {
-  const app = await createServer(DB_NAME)
+  const app = await startServer(DB_NAME)
   const port = PORT || 8000
 
   app.listen(port, () => {
