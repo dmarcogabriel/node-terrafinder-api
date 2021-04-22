@@ -7,5 +7,6 @@ export const logger = () => (
   next: NextFunction,
 ): void => {
   // todo: add logs here
+  console.log(req)
   next()
 }
