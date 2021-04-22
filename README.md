@@ -1,6 +1,4 @@
-[![Gitpod Ready-to-Code](https://img.shields.io/badge/Gitpod-Ready--to--Code-blue?logo=gitpod)](https://gitpod.io/#https://github.com/dmarcogabriel/node-express) 
-
-# Node-Express
+# Terrafinder API
 
 ## Config
 
@@ -35,3 +33,8 @@ src/
  -- services/: contains the application services
  -- utils/: contains the application utilities, validators, parsers and helpers
  ```
+
+## TO DO:
+* Add an index page
+* Add an api/ index page
+* Add routes to README file

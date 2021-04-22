@@ -1,33 +1,44 @@
 module.exports = {
   env: {
-    commonjs: true,
-    es6: true,
+    es2021: true,
     node: true,
-    jest: true,
   },
   extends: [
     'airbnb-base',
+    'plugin:@typescript-eslint/recommended',
+    'plugin:import/typescript',
   ],
-  globals: {
-    Atomics: 'readonly',
-    SharedArrayBuffer: 'readonly',
-  },
+  parser: '@typescript-eslint/parser',
   parserOptions: {
-    ecmaVersion: 2018,
+    ecmaVersion: 12,
+    sourceType: 'module',
   },
+  plugins: [
+    '@typescript-eslint',
+  ],
   rules: {
     'no-underscore-dangle': 'off',
     semi: ['error', 'never'],
-    'max-len': ['error', { code: 80 }],
+    'max-len': ['error', { code: 100 }],
     'func-names': 'off',
     'import/no-extraneous-dependencies': [
       'error',
       {
         devDependencies: [
-          '**/*.test.js',
-          '**/*.spec.js',
+          '**/*.test.ts',
+          '**/*.spec.ts',
           '**/tests/**',
         ],
       }],
+    'import/prefer-default-export': 'off',
+    'import/extensions': 'off',
+  },
+  settings: {
+    'import/parsers': {
+      '@typescript-eslint/parser': ['.ts'],
+    },
+    'import/resolver': {
+      typescript: {},
+    },
   },
 }
