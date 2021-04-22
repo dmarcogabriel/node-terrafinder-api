@@ -5,11 +5,6 @@ const _setRangeFilter = (value: string) => {
   return { $gte, $lte }
 }
 
-const RANGE_FILTERS = {
-  amount: true,
-  size: true,
-}
-
 export const parseRangeFilter = (query: any) => {
   if (isNil(query) && !keys(query).length) return null
 
