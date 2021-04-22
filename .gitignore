@@ -2,7 +2,7 @@ node_modules
 package-lock.json
 .vscode
 .DS_Store
-.env
+*.env
 yarn.lock
 src/storage/*
 dist
