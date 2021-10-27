@@ -1,3 +1,4 @@
+import { blueBright, yellow, greenBright } from 'chalk'
 import { startServer } from './server'
 
 const { PORT, DB_NAME } = process.env
@@ -7,8 +8,9 @@ const start = async () => {
   const port = PORT || 8000
 
   app.listen(port, () => {
-    // eslint-disable-next-line
-    console.log(`server is running at http://localhost:${port}`)
+    console.log(
+      `${blueBright('[SERVER] ')} [STATUS]: ${greenBright('Running')} | [PORT]: ${yellow(port)}`,
+    )
   })
 }
 

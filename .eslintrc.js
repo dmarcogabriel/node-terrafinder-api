@@ -32,6 +32,8 @@ module.exports = {
       }],
     'import/prefer-default-export': 'off',
     'import/extensions': 'off',
+    'no-console': 'off',
+    'linebreak-style': 'off',
   },
   settings: {
     'import/parsers': {

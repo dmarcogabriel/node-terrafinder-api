@@ -21,6 +21,19 @@ export interface User extends Document {
   generateAccessToken(id: string): string
 }
 
+export interface UserResponse {
+  firstName: string
+  lastName: string
+  phone: string
+  cpf: string
+  email: string
+  password?: string
+  avatar?: string
+  isDeleted?: boolean
+  updatedAt: Date
+  createdAt: Date
+}
+
 const UserSchema = new Schema<User>({
   firstName: { type: String, required: true },
   lastName: { type: String, required: true },

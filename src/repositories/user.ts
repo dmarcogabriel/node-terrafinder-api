@@ -1,12 +1,15 @@
 import { UploadedFile } from 'express-fileupload'
-import UserModel, { User } from '../models/User'
+import { omit } from 'lodash'
+import UserModel, { User, UserResponse } from '../models/User'
 import { saveFileOnStorage } from '../services/fileUpload.service'
 
-const getAll = async (id: string = null): Promise<User | Array<User>> => {
+const getAll = async (id: string = null): Promise<UserResponse | UserResponse[]> => {
   if (id) {
-    return UserModel.findById(id)
+    const user = await UserModel.findById(id)
+    return omit(user.toObject(), 'password')
   }
-  return UserModel.find()
+  const users = UserModel.find()
+  return users.map((user) => user.map((u) => omit(u, 'password')))
 }
 
 const create = async (data: User): Promise<string> => {

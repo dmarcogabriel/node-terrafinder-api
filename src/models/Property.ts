@@ -53,7 +53,7 @@ PropertySchema.statics.findByUserId = function (
   this: PropertyModel,
   userId: string,
 ) {
-  return this.where('userId', userId).exec()
+  return this.where('user', userId).exec()
 }
 
 PropertySchema.statics.findWithUser = async function (this: PropertyModel, id: string) {

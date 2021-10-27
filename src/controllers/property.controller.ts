@@ -55,11 +55,12 @@ const getAllByUserId = async (req: Request, res: Response): Promise<void> => {
     const properties = await repository.getByUserId(userId)
 
     if (!properties.length) {
-      res.status(400).json({
+      res.status(404).json({
         message: 'Propriedade não encontrada',
       })
+    } else {
+      res.status(200).json({ message: 'ok', data: { properties } })
     }
-    res.status(200).json({ message: 'ok', data: { properties } })
   } catch (error) {
     res.status(500).json({
       message: '[Error] Malformed id',
