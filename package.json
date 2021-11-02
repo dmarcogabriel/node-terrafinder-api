@@ -9,7 +9,7 @@
   },
   "scripts": {
     "#": "============== RUN ==============",
-    "start": "node menu/index.js",
+    "start": "yarn start:prod",
     "start:dev": "nodemon src/index.ts",
     "start:stg": "echo 'Not working yet'",
     "start:prod": "yarn build && node dist",

@@ -1,19 +1,21 @@
 import { forIn, isNil, keys } from 'lodash'
+import { FilterQuery } from 'mongoose'
+import { FarmQueryString } from '../types'
+import { Property } from '../models/Property'
 
-const _setRangeFilter = (value: string) => {
-  const [$gte, $lte]: Array<string> = JSON.parse(value)
-  return { $gte, $lte }
-}
+type QueryKey = 'amount' | 'size' | 'propertyKind' | 'state';
 
-export const parseRangeFilter = (query: any) => {
+export const parseRangeFilter = (query: FarmQueryString): FilterQuery<Property> => {
   if (isNil(query) && !keys(query).length) return null
 
-  const filter: any = {}
-  forIn(query, (value, key) => {
-    // todo: fix this shit
+  const filter: FilterQuery<Property> = {}
+  forIn(query, (value, key: QueryKey) => {
     if (key === 'amount' || key === 'size') {
-      filter[key] = _setRangeFilter(value)
-    } else filter[key] = value
+      const [min, max]: (number & RegExp)[] = JSON.parse(value)
+      filter[key] = { $gte: min, $lte: max }
+    } else {
+      filter[key] = value
+    }
   })
   return filter
 }

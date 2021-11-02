@@ -3,6 +3,7 @@ import { forIn, isArray } from 'lodash'
 import PropertyModel, { Property } from '../models/Property'
 import { saveFileOnStorage } from '../services/fileUpload.service'
 import { parseRangeFilter } from '../utils/filterParser'
+import { FarmQueryString } from '../types'
 
 const create = async (data: Property): Promise<Property> => {
   const property = new PropertyModel(data)
@@ -15,8 +16,7 @@ interface GetPropertiesResponse {
   total: number
 }
 
-// todo: fix query types
-const getProperties = async (query: any): Promise<GetPropertiesResponse> => {
+const getProperties = async (query: FarmQueryString): Promise<GetPropertiesResponse> => {
   const filter = parseRangeFilter(query)
   const properties = await PropertyModel.find(filter)
   const total = await PropertyModel.countDocuments()
