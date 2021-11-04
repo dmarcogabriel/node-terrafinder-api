@@ -7,6 +7,8 @@ const post = async (req: Request, res: Response): Promise<void> => {
     res.status(201)
       .json({ message: 'Anúncio criado com sucesso!', data: { property } })
   } catch (error) {
+    console.log(error)
+    console.log(error.message)
     res.status(500).json({
       message: '[Error] failed to save property',
       data: { error },
@@ -106,6 +108,20 @@ const deleteProperty = async (req: Request, res: Response): Promise<void> => {
   }
 }
 
+const activateProperty = async (req: Request, res: Response): Promise<void> => {
+  const { id } = req.params
+
+  try {
+    const property = await repository.activateProperty(id)
+    res.status(200).json({ message: 'Anúncio da propriedade ativado com sucesso', data: property })
+  } catch (error) {
+    console.log(error)
+    res.status(500).json({
+      message: 'Erro ao ativar anúncio da propriedade',
+    })
+  }
+}
+
 export default {
   getAll,
   getById,
@@ -113,4 +129,5 @@ export default {
   post,
   deleteProperty,
   updatePropertyPhotos,
+  activateProperty,
 }

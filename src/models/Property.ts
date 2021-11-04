@@ -9,13 +9,14 @@ export interface Property extends Document {
   propertyKind: string
   nearbyCity: string
   cep: string
-  amount: number
+  amount: number | string
   size: string
   state: string
   farming: Array<string>
   activities: Array<string>
   presentationPhoto: string
   photos: Array<string>
+  isActive: boolean
   user: any
   updatedAt: Date
   createdAt: Date
@@ -40,6 +41,7 @@ const PropertySchema = new Schema<Property, PropertyModel>({
   activities: { type: [String], required: true },
   presentationPhoto: { type: String, required: false },
   photos: { type: [String], required: false },
+  isActive: { type: Boolean, required: false },
   user: {
     type: Schema.Types.ObjectId,
     ref: 'User',

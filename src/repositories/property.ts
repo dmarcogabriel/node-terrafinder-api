@@ -1,12 +1,16 @@
 import { UploadedFile, FileArray } from 'express-fileupload'
-import { forIn, isArray } from 'lodash'
+import { forIn, isArray, isNil } from 'lodash'
 import PropertyModel, { Property } from '../models/Property'
-import { saveFileOnStorage } from '../services/fileUpload.service'
-import { parseRangeFilter } from '../utils/filterParser'
-import { FarmQueryString } from '../types'
+import { saveFileOnStorage, deleteFileFromStorage } from '../services/fileUpload.service'
+import { createPropertyFilter } from '../utils/filterParser'
+import { parseMoney } from '../utils/moneyParser'
 
 const create = async (data: Property): Promise<Property> => {
-  const property = new PropertyModel(data)
+  const property = new PropertyModel({
+    ...data,
+    amount: parseMoney(data.amount),
+    isActive: false,
+  })
   await property.save()
   return property
 }
@@ -16,9 +20,9 @@ interface GetPropertiesResponse {
   total: number
 }
 
-const getProperties = async (query: FarmQueryString): Promise<GetPropertiesResponse> => {
-  const filter = parseRangeFilter(query)
-  const properties = await PropertyModel.find(filter)
+const getProperties = async (query: any): Promise<GetPropertiesResponse> => {
+  const filter = createPropertyFilter(query)
+  const properties = await PropertyModel.find(isNil(filter) ? null : filter)
   const total = await PropertyModel.countDocuments()
   return { properties, total }
 }
@@ -47,9 +51,28 @@ const updatePhotos = async (files: FileArray, id: string): Promise<void> => {
 }
 
 const deleteProperty = async (id: string): Promise<void> => {
-  await PropertyModel.findByIdAndDelete(id)
+  const deletedProperty = await PropertyModel.findById(id)
+  if (deletedProperty.photos) {
+    deletedProperty.photos.forEach((image) => {
+      deleteFileFromStorage(image)
+    })
+  }
+}
+
+const activateProperty = async (id: string): Promise<Property> => {
+  const property: Property = await PropertyModel.findWithUser(id)
+  property.isActive = true
+  property.updatedAt = new Date()
+  await property.save()
+  return property
 }
 
 export default {
-  create, getProperties, getByUserId, getById, updatePhotos, deleteProperty,
+  create,
+  getProperties,
+  getByUserId,
+  getById,
+  updatePhotos,
+  deleteProperty,
+  activateProperty,
 }

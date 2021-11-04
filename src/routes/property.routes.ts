@@ -12,4 +12,6 @@ export const createPropertyRoutes = (router: Router): void => {
     authService.authorize,
     propertyController.updatePropertyPhotos,
   )
+  router.put('/properties/activate/:id', authService.authorize, propertyController.activateProperty)
+  router.delete('/properties/:id', authService.authorize, propertyController.deleteProperty)
 }
