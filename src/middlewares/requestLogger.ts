@@ -1,11 +1,11 @@
 import { Request, Response, NextFunction } from 'express'
 import { format } from 'date-fns'
-import { blueBright, red, yellow } from 'chalk'
+import { blueBright, yellow } from 'chalk'
 import { ResponseBody } from '../interfaces/ResponseBody'
 
-export const logger = () => (
+export const requestLogger = () => (
   req: Request,
-  res: Response<ResponseBody>,
+  _: Response<ResponseBody>,
   next: NextFunction,
 ): void => {
   console.log(
@@ -18,9 +18,6 @@ export const logger = () => (
   console.log(blueBright('[PARAMS]: '), req.params)
   console.log(blueBright('[QUERY]: '), req.query)
   console.log(blueBright('[BODY]: '), req.body)
-
-  console.log(red('[RESPONSE]'))
-  console.log(`${red('[STATUS]:')} ${res.statusCode}`)
 
   next()
 }

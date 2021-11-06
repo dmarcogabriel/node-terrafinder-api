@@ -4,7 +4,7 @@ import helmet from 'helmet'
 import compression from 'compression'
 import fileUpload from 'express-fileupload'
 import dotenv from 'dotenv'
-import { appMidlewares } from './middleware'
+import { requestLogger, putMethod } from '../middlewares'
 
 const app = express()
 
@@ -16,6 +16,7 @@ app.use(express.json())
 app.use(cors())
 app.use(fileUpload({ createParentPath: true }))
 app.use('/images', express.static(`${__dirname}/../storage`))
-appMidlewares(app)
+app.use(putMethod())
+app.use(requestLogger())
 
 export default app

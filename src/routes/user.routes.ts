@@ -11,4 +11,5 @@ export const createUserRoutes = (router: Router): void => {
     authService.authorize,
     userController.uploadFile,
   )
+  router.put('/users/:id', authService.authorize, userController.updatePlan)
 }

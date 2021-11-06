@@ -1,1 +1,2 @@
-export { logger } from './responseBody'
+export { requestLogger } from './requestLogger'
+export { putMethod } from './putMethod.middleware'

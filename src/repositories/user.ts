@@ -3,14 +3,12 @@ import { omit } from 'lodash'
 import UserModel, { User, UserResponse } from '../models/User'
 import { saveFileOnStorage } from '../services/fileUpload.service'
 
-const getAll = async (id: string = null): Promise<UserResponse | UserResponse[]> => {
-  if (id) {
-    const user = await UserModel.findById(id)
-    return omit(user.toObject(), 'password')
-  }
+const getAll = async (): Promise<UserResponse[]> => {
   const users = UserModel.find()
   return users.map((user) => user.map((u) => omit(u, 'password')))
 }
+
+const findById = (id: string): Promise<UserResponse> => UserModel.findWithPlan(id)
 
 const create = async (data: User): Promise<string> => {
   const user: User = new UserModel(data)
@@ -49,12 +47,22 @@ const updateAvatar = async (
 
 const deleteUser = (id: string): void => {
   UserModel.findByIdAndRemove(id)
+  // todo: remove avatar file
+}
+
+const changePlan = async (id: string, plan: string): Promise<User> => {
+  const user: User = await UserModel.findById(id)
+  user.plan = plan
+  await user.save()
+  return user
 }
 
 export default {
   getAll,
+  findById,
   create,
   deleteUser,
   login,
   updateAvatar,
+  changePlan,
 }

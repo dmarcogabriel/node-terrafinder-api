@@ -51,7 +51,7 @@ const updatePhotos = async (files: FileArray, id: string): Promise<void> => {
 }
 
 const deleteProperty = async (id: string): Promise<void> => {
-  const deletedProperty = await PropertyModel.findById(id)
+  const deletedProperty = await PropertyModel.findByIdAndDelete(id)
   if (deletedProperty.photos) {
     deletedProperty.photos.forEach((image) => {
       deleteFileFromStorage(image)
