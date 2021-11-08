@@ -32,3 +32,8 @@ export const updatePlan = async (id: string, data: Plan): Promise<Plan> => {
   await plan.save()
   return plan
 }
+
+export const getPlanById = async (id: string): Promise<Plan> => {
+  const plan = await PlanModel.findById(id)
+  return plan
+}

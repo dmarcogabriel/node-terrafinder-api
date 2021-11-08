@@ -1,5 +1,4 @@
 import { Request, Response, NextFunction } from 'express'
-import { format } from 'date-fns'
 import { ResponseBody } from '../interfaces/ResponseBody'
 
 export const putMethod = () => (

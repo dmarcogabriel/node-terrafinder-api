@@ -4,7 +4,7 @@ import { isNil } from 'lodash'
 import authService from '../services/auth.service'
 import planController from '../controllers/plan.controller'
 import { PlanString } from '../types'
-import { getUserPlan } from '../repositories/plan.repository'
+import { getUserPlan, getPlanById } from '../repositories/plan.repository'
 
 const isPlanTypeCorrect: CustomValidator = (plan: PlanString) => {
   if (plan !== 'free-plan' && plan !== 'premium-plan' && plan !== 'pro-plan') {
@@ -22,6 +22,12 @@ const isValidUser: CustomValidator = async (userId: string) => {
   throw new Error('User has already an existing plan.')
 }
 
+const isUsersPlan: CustomValidator = async (userId: string, { req }) => {
+  const plan = await getPlanById(req.params.id)
+  if (plan.user.toString() === userId) return true
+  throw new Error('Plan does not belong to given user.')
+}
+
 export const createPlanRoutes = (router: Router): void => {
   router.post(
     '/plans',
@@ -31,11 +37,17 @@ export const createPlanRoutes = (router: Router): void => {
     planController.createPlan,
   )
   router.get('/plans/:userId', authService.authorize, planController.getByUserId)
-  router.put('/plans/activate/:id', authService.authorize, planController.activatePlan)
+  router.put(
+    '/plans/activate/:id',
+    body('userId').notEmpty().custom(isUsersPlan),
+    authService.authorize,
+    planController.activatePlan,
+  )
   router.put(
     '/plans/:id',
     authService.authorize,
     body('type').notEmpty().custom(isPlanTypeCorrect),
+    body('userId').notEmpty().custom(isUsersPlan),
     planController.updatePlan,
   )
 }
