@@ -1,16 +1,16 @@
 import { Router } from 'express'
-import { createUserRoutes } from './user.routes'
-import { createPropertyRoutes } from './property.routes'
-import { createAuthRoutes } from './auth.routes'
-import { createIndexRoutes } from './index.routes'
-import { createPlanRoutes } from './plan.routes'
+import authController from '../controllers/auth.controller'
+import passwordRoutes from './password.routes'
+import userRoutes from './user.routes'
+import propertyRoutes from './property.routes'
+import planRoutes from './plan.routes'
 
 const router = Router()
 
-createUserRoutes(router)
-createPropertyRoutes(router)
-createAuthRoutes(router)
-createIndexRoutes(router)
-createPlanRoutes(router)
+router.use('/users', userRoutes)
+router.use('/properties', propertyRoutes)
+router.use('/plans', planRoutes)
+router.use('/password', passwordRoutes)
+router.post('/login', authController.login)
 
 export default router

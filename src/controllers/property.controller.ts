@@ -1,5 +1,5 @@
 import { Request, Response } from 'express'
-import repository from '../repositories/property'
+import repository from '../repositories/property/property.repository'
 
 const post = async (req: Request, res: Response): Promise<void> => {
   try {
@@ -7,8 +7,7 @@ const post = async (req: Request, res: Response): Promise<void> => {
     res.status(201)
       .json({ message: 'Anúncio criado com sucesso!', data: { property } })
   } catch (error) {
-    console.log(error)
-    console.log(error.message)
+    console.error(error)
     res.status(500).json({
       message: '[Error] failed to save property',
       data: { error },

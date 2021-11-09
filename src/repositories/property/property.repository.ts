@@ -1,16 +1,17 @@
 import { UploadedFile, FileArray } from 'express-fileupload'
 import { forIn, isArray, isNil } from 'lodash'
-import PropertyModel, { Property } from '../models/Property'
-import { saveFileOnStorage, deleteFileFromStorage } from '../services/fileUpload.service'
-import { createPropertyFilter } from '../utils/filterParser'
-import { parseMoney } from '../utils/moneyParser'
+import PropertyModel, { Property } from '../../models/Property'
+import { saveFileOnStorage, deleteFileFromStorage } from '../../services/fileUpload.service'
+import { createPropertyFilter } from '../../utils/filterParser'
+import { parseMoney } from '../../utils/moneyParser'
+import propertyMapper from './property.mapper'
 
 const create = async (data: Property): Promise<Property> => {
-  const property = new PropertyModel({
+  const property = new PropertyModel(propertyMapper.map({
     ...data,
     amount: parseMoney(data.amount),
     isActive: false,
-  })
+  }))
   await property.save()
   return property
 }

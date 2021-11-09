@@ -5,6 +5,7 @@ import compression from 'compression'
 import fileUpload from 'express-fileupload'
 import dotenv from 'dotenv'
 import { requestLogger, putMethod } from '../middlewares'
+import './logger'
 
 const app = express()
 
