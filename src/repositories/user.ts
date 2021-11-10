@@ -10,6 +10,11 @@ const getAll = async (): Promise<UserResponse[]> => {
 
 const findById = (id: string): Promise<UserResponse> => UserModel.findWithPlan(id)
 
+const findByEmail = async (email: string): Promise<User> => {
+  const [user] = await UserModel.where('email', email).exec()
+  return user
+}
+
 const create = async (data: User): Promise<string> => {
   const user: User = new UserModel(data)
   user.password = user.generateHash(data.password)
@@ -65,4 +70,10 @@ export default {
   login,
   updateAvatar,
   changePlan,
+  findByEmail,
+  resetPassword: async (id: string, password: string): Promise<void> => {
+    const user = await UserModel.findById(id)
+    user.password = user.generateHash(password)
+    await user.save()
+  },
 }

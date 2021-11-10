@@ -7,12 +7,12 @@ const COLLECTIONS = [
 ]
 
 const connect = async (dbName: string): Promise<void> => {
-  console.log(`${blueBright('[DATABASE]')} Connecting to MongoDB: ${yellow(dbName)}`)
+  console.info('database', `connecting to mongoDB: ${yellow(dbName)}`)
   await mongoose.connect(
     `${process.env.DB_URL}/${dbName}?retryWrites=true&w=majority`,
     { useNewUrlParser: true, useUnifiedTopology: true },
   )
-  console.log(`${blueBright('[DATABASE]')} Connected ${greenBright('Successfull')}!`)
+  console.info('database', 'connected successfully')
 }
 
 const dropCollections = async (): Promise<void> => {

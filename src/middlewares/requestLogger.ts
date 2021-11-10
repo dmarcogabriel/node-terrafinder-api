@@ -9,15 +9,15 @@ export const requestLogger = () => (
   next: NextFunction,
 ): void => {
   console.log(
-    `${blueBright(`[REQUEST | ${format(new Date(), 'PPpp')}]`)}`,
+    `[${blueBright('REQUEST')}] | ${format(new Date(), 'PPpp')}`,
   )
   console.log(
-    `${blueBright('[URL]:')} ${yellow(req.url)} | ${blueBright('[METHOD]:')} ${yellow(req.method)}`,
+    `[${blueBright('URL')}] ${yellow(req.url)} | [${blueBright('METHOD')}] ${yellow(req.method)}`,
   )
-  console.log(blueBright('[HEADERS]: '), req.headers)
-  console.log(blueBright('[PARAMS]: '), req.params)
-  console.log(blueBright('[QUERY]: '), req.query)
-  console.log(blueBright('[BODY]: '), req.body)
+  console.log(`[${blueBright('HEADERS')}]`, req.headers)
+  console.log(`[${blueBright('PARAMS')}]`, req.params)
+  console.log(`[${blueBright('QUERY')}]`, req.query)
+  console.log(`[${blueBright('BODY')}]`, req.body)
 
   next()
 }

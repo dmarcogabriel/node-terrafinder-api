@@ -4,6 +4,6 @@ import forgotPasswordController from '../controllers/forgotPassword.controller'
 const router = Router()
 
 router.post('/forgot', forgotPasswordController.sendForgotPasswordEmail)
-router.post('/reset', forgotPasswordController.resetPassword)
+router.post('/reset/:id', forgotPasswordController.resetPassword)
 
 export default router

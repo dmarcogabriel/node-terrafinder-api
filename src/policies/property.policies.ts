@@ -1,11 +1,12 @@
 import { checkSchema, CustomValidator, body } from 'express-validator'
-import propertyRepository from '../repositories/property/property.repository'
+import PropertyModel from '../models/Property'
+import { parseMoney } from '../utils/moneyParser'
 
 const isUserProperty: CustomValidator = async (userId: string, { req }) => {
   // * In the future here it could get user's role to verify if it's admin, seller or customer
-  const property = await propertyRepository.getById(req.params.id)
+  const property = await PropertyModel.findById(req.params.id)
   if (property.user.toString() === userId) return true
-  return false
+  throw new Error('Property doest not belong to this user')
 }
 
 export default {
@@ -30,8 +31,11 @@ export default {
     },
     amount: {
       notEmpty: true,
-      isNumeric: {
-        errorMessage: 'Amount must be a numeric type',
+      isString: {
+        errorMessage: 'Amount must be a string type',
+      },
+      customSanitizer: {
+        options: (value: string) => parseMoney(value),
       },
     },
     size: {

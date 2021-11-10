@@ -30,6 +30,13 @@ router.put(
   validate,
   propertyController.activateProperty,
 )
+router.put(
+  '/:id',
+  authService.authorize,
+  propertyPolicies.isUserProperty,
+  validate,
+  propertyController.updateProperty,
+)
 router.delete(
   '/:id',
   authService.authorize,

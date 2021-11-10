@@ -3,13 +3,12 @@ import { forIn, isArray, isNil } from 'lodash'
 import PropertyModel, { Property } from '../../models/Property'
 import { saveFileOnStorage, deleteFileFromStorage } from '../../services/fileUpload.service'
 import { createPropertyFilter } from '../../utils/filterParser'
-import { parseMoney } from '../../utils/moneyParser'
 import propertyMapper from './property.mapper'
+import { parseMoney } from '../../utils/moneyParser'
 
 const create = async (data: Property): Promise<Property> => {
   const property = new PropertyModel(propertyMapper.map({
     ...data,
-    amount: parseMoney(data.amount),
     isActive: false,
   }))
   await property.save()
@@ -68,6 +67,28 @@ const activateProperty = async (id: string): Promise<Property> => {
   return property
 }
 
+const updateProperty = async (id: string, data: Property): Promise<Property> => {
+  const property = await PropertyModel.findById(id)
+
+  if (data.name) property.name = data.name
+  if (data.ownerName) property.ownerName = data.ownerName
+  if (data.description) property.description = data.description
+  if (data.propertyKind) property.propertyKind = data.propertyKind
+  if (data.nearbyCity) property.nearbyCity = data.nearbyCity
+  if (data.cep) property.cep = data.cep
+  if (data.amount) property.amount = parseMoney(data.amount)
+  if (data.size) property.size = data.size
+  if (data.state) property.state = data.state
+  if (data.farming) property.farming = data.farming
+  if (data.activities) property.activities = data.activities
+  if (data.presentationPhoto) property.presentationPhoto = data.presentationPhoto
+  if (data.photos) property.photos = data.photos
+  if (data.isActive) property.isActive = data.isActive
+
+  await property.save()
+  return property
+}
+
 export default {
   create,
   getProperties,
@@ -76,4 +97,5 @@ export default {
   updatePhotos,
   deleteProperty,
   activateProperty,
+  updateProperty,
 }
