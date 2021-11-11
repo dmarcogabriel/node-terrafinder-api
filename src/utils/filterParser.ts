@@ -14,13 +14,17 @@ export const createPropertyFilter = (query: any): FilterQuery<Property> => {
   if (query.isActive) filters.isActive = { $eq: JSON.parse(query.isActive) }
   if (query.amount) {
     const [min, max] = JSON.parse(query.amount)
-    filters.amount = { $gte: min, $lte: max }
+    const amount: { $gte: number, $lte?: number } = { $gte: min }
+    if (max === 50000000) amount.$lte = max
+    filters.amount = amount
   }
   if (query.size) {
     const [min, max] = JSON.parse(query.size)
-    filters.size = { $gte: min, $lte: max }
+    const size: { $gte: string, $lte?: string } = { $gte: String(min) }
+    // if (max === 350) size.$lte = String(max)
+    filters.size = size
   }
   if (query.propertyKind) filters.propertyKind = { $eq: query.propertyKind }
   if (query.state) filters.state = { $eq: query.state }
-  return filters
+  return isNil(filters) ? null : filters
 }

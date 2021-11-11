@@ -89,6 +89,35 @@ const updateProperty = async (id: string, data: Property): Promise<Property> => 
   return property
 }
 
+interface GetFiltersResponse {
+  kinds: string[]
+  states: string[]
+  sizes: string[]
+}
+
+const getFilters = async (query: any): Promise<GetFiltersResponse> => {
+  const removeDuplicatedFilters = <T>(options: T[]) => options.filter(
+    (option, i, optionList) => i === optionList.indexOf(option),
+  )
+  const properties = await PropertyModel.find(createPropertyFilter(query))
+
+  const propertyKinds: string[] = removeDuplicatedFilters<string>(
+    properties.map((property) => property.propertyKind),
+  )
+  const propertyStates: string[] = removeDuplicatedFilters<string>(
+    properties.map((property) => property.state),
+  )
+  const propertySizes: string[] = removeDuplicatedFilters<string>(
+    properties.map((property) => property.size),
+  )
+
+  return {
+    kinds: ['', ...propertyKinds],
+    states: ['', ...propertyStates],
+    sizes: ['', ...propertySizes],
+  }
+}
+
 export default {
   create,
   getProperties,
@@ -98,4 +127,5 @@ export default {
   deleteProperty,
   activateProperty,
   updateProperty,
+  getFilters,
 }

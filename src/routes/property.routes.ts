@@ -14,6 +14,7 @@ router.post(
   propertyController.post,
 )
 router.get('/', propertyController.getAll)
+router.get('/filters', propertyController.getPropertyFilters)
 router.get('/:id', propertyController.getById)
 router.get('/user/:userId', propertyController.getAllByUserId)
 router.put(

@@ -143,4 +143,16 @@ export default {
       })
     }
   },
+  getPropertyFilters: async (req: Request, res: Response): Promise<void> => {
+    try {
+      const filters = await repository.getFilters(req.query)
+      console.log('[RETURN]', { filters })
+      res.status(200).json({ filters })
+    } catch (error) {
+      console.error(error.message)
+      res.status(500).json({
+        message: 'Erro ao buscar filtros',
+      })
+    }
+  },
 }
