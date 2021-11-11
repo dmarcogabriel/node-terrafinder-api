@@ -9,7 +9,8 @@
   },
   "scripts": {
     "#": "============== RUN ==============",
-    "start": "yarn start:prod",
+    "postinstall": "rimraf dist && tsc",
+    "start": "node dist",
     "dev": "nodemon src/index.ts",
     "start:stg": "echo 'Not working yet'",
     "start:prod": "yarn build && node dist",
