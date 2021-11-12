@@ -3,9 +3,13 @@ import { isNil } from 'lodash'
 import { getUserPlan, getPlanById } from '../repositories/plan.repository'
 
 const isUsersPlan: CustomValidator = async (userId: string, { req }) => {
-  const plan = await getPlanById(req.params.id)
-  if (plan.user.toString() === userId) return true
-  throw new Error('Plan does not belong to given user.')
+  if (req.params && req.params.id) {
+    const plan = await getPlanById(req.params.id)
+    if (plan && plan.user.toString() === userId) return true
+    throw new Error('Plan does not belong to given user.')
+  } else {
+    throw new Error('userId param is missing')
+  }
 }
 
 const isPlanStringValid: CustomValidator = (plan: string) => {

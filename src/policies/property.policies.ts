@@ -2,11 +2,17 @@ import { checkSchema, CustomValidator, body } from 'express-validator'
 import PropertyModel from '../models/Property'
 import { parseMoney } from '../utils/moneyParser'
 
-const isUserProperty: CustomValidator = async (userId: string, { req }) => {
+const isUserProperty: CustomValidator = async (userId: string, { req }): Promise<boolean> => {
   // * In the future here it could get user's role to verify if it's admin, seller or customer
-  const property = await PropertyModel.findById(req.params.id)
-  if (property.user.toString() === userId) return true
-  throw new Error('Property doest not belong to this user')
+  if (req.params && req.params.id) {
+    const property = await PropertyModel.findById(req.params.id)
+
+    if (property) {
+      if (property.user.toString() === userId) return true
+      throw new Error('Property doest not belong to this user')
+    }
+  }
+  throw new Error('userId param is missing')
 }
 
 export default {

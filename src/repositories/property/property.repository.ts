@@ -22,7 +22,12 @@ interface GetPropertiesResponse {
 
 const getProperties = async (query: any): Promise<GetPropertiesResponse> => {
   const filter = createPropertyFilter(query)
-  const properties = await PropertyModel.find(isNil(filter) ? null : filter)
+  let properties: Property[] | undefined
+
+  if (isNil(filter)) {
+    properties = await PropertyModel.find()
+  } else properties = await PropertyModel.find(filter)
+
   const total = await PropertyModel.countDocuments()
   return { properties, total }
 }
@@ -38,21 +43,23 @@ const getByUserId = async (userId: string): Promise<Array<Property>> => {
 }
 
 const updatePhotos = async (files: FileArray, id: string): Promise<void> => {
-  const property: Property = await PropertyModel.findById(id)
+  const property = await PropertyModel.findById(id)
 
-  forIn(files, (file: UploadedFile | Array<UploadedFile>) => {
-    const fileToSave = isArray(file) ? file[0] : file
-    const fileName = saveFileOnStorage(fileToSave)
-    property.photos = [...property.photos, fileName]
-  })
+  if (property) {
+    forIn(files, (file: UploadedFile | Array<UploadedFile>) => {
+      const fileToSave = isArray(file) ? file[0] : file
+      const fileName = saveFileOnStorage(fileToSave)
+      property.photos = [...property.photos, fileName]
+    })
 
-  property.updatedAt = new Date()
-  await property.save()
+    property.updatedAt = new Date()
+    await property.save()
+  }
 }
 
 const deleteProperty = async (id: string): Promise<void> => {
   const deletedProperty = await PropertyModel.findByIdAndDelete(id)
-  if (deletedProperty.photos) {
+  if (deletedProperty && deletedProperty.photos) {
     deletedProperty.photos.forEach((image) => {
       deleteFileFromStorage(image)
     })
@@ -67,26 +74,29 @@ const activateProperty = async (id: string): Promise<Property> => {
   return property
 }
 
-const updateProperty = async (id: string, data: Property): Promise<Property> => {
+const updateProperty = async (id: string, data: Property): Promise<Property | null> => {
   const property = await PropertyModel.findById(id)
 
-  if (data.name) property.name = data.name
-  if (data.ownerName) property.ownerName = data.ownerName
-  if (data.description) property.description = data.description
-  if (data.propertyKind) property.propertyKind = data.propertyKind
-  if (data.nearbyCity) property.nearbyCity = data.nearbyCity
-  if (data.cep) property.cep = data.cep
-  if (data.amount) property.amount = parseMoney(data.amount)
-  if (data.size) property.size = data.size
-  if (data.state) property.state = data.state
-  if (data.farming) property.farming = data.farming
-  if (data.activities) property.activities = data.activities
-  if (data.presentationPhoto) property.presentationPhoto = data.presentationPhoto
-  if (data.photos) property.photos = data.photos
-  if (data.isActive) property.isActive = data.isActive
+  if (property) {
+    if (data.name) property.name = data.name
+    if (data.ownerName) property.ownerName = data.ownerName
+    if (data.description) property.description = data.description
+    if (data.propertyKind) property.propertyKind = data.propertyKind
+    if (data.nearbyCity) property.nearbyCity = data.nearbyCity
+    if (data.cep) property.cep = data.cep
+    if (data.amount) property.amount = parseMoney(data.amount)
+    if (data.size) property.size = data.size
+    if (data.state) property.state = data.state
+    if (data.farming) property.farming = data.farming
+    if (data.activities) property.activities = data.activities
+    if (data.presentationPhoto) property.presentationPhoto = data.presentationPhoto
+    if (data.photos) property.photos = data.photos
+    if (data.isActive) property.isActive = data.isActive
 
-  await property.save()
-  return property
+    await property.save()
+    return property
+  }
+  return null
 }
 
 interface GetFiltersResponse {
@@ -95,11 +105,16 @@ interface GetFiltersResponse {
   sizes: string[]
 }
 
-const getFilters = async (query: any): Promise<GetFiltersResponse> => {
+const getFilters = async (query: any): Promise<GetFiltersResponse | null> => {
   const removeDuplicatedFilters = <T>(options: T[]) => options.filter(
     (option, i, optionList) => i === optionList.indexOf(option),
   )
-  const properties = await PropertyModel.find(createPropertyFilter(query))
+  const filters = createPropertyFilter(query)
+  let properties
+  if (isNil(filters)) properties = await PropertyModel.find()
+  else properties = await PropertyModel.find(filters)
+
+  if (isNil(properties)) return null
 
   const propertyKinds: string[] = removeDuplicatedFilters<string>(
     properties.map((property) => property.propertyKind),

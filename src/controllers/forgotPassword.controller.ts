@@ -18,7 +18,7 @@ const sendForgotPasswordEmail = async (req: Request, res: Response): Promise<voi
     res.status(200).json({ message: 'Um e-mail foi enviado para sua caixa de email.' })
   } catch (error) {
     res.status(500).json({ message: 'Erro ao enviar email' })
-    console.error('sendForgotPasswordEmail Error', error.message)
+    if (error) console.error('sendForgotPasswordEmail Error', error)
   }
 }
 
@@ -28,7 +28,7 @@ const resetPassword = async (req: Request, res: Response): Promise<void> => {
     res.status(200).json({ message: 'Senha atualizada com sucesso!' })
   } catch (error) {
     res.status(500).json({ message: 'Erro ao atualizar senha' })
-    console.error('resetPassword Error', error.message)
+    if (error) console.error('resetPassword Error', error)
   }
 }
 

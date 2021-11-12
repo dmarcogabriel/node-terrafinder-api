@@ -27,10 +27,10 @@ interface LoginResponse {
   id: string
 }
 
-const login = async (email: string, password: string): Promise<LoginResponse> => {
-  const user: User = await UserModel.findOne({ email })
+const login = async (email: string, password: string): Promise<LoginResponse | null> => {
+  const user = await UserModel.findOne({ email })
   if (!user) return null
-  const userModel: User = new UserModel(user)
+  const userModel = new UserModel(user)
   if (!userModel.validateHash(password)) return null
   const id: string = userModel._id
   const token = user.generateAccessToken(id)
@@ -40,14 +40,17 @@ const login = async (email: string, password: string): Promise<LoginResponse> =>
 const updateAvatar = async (
   avatar: UploadedFile,
   id: string,
-): Promise<string> => {
-  const user: User = await UserModel.findById(id)
-  const fileName = saveFileOnStorage(avatar)
-  user.avatar = fileName
-  user.updatedAt = new Date()
-  await user.save()
-  return user.avatar
-  // todo: remove old avatar
+): Promise<string | null> => {
+  const user = await UserModel.findById(id)
+  if (user) {
+    const fileName = saveFileOnStorage(avatar)
+    user.avatar = fileName
+    user.updatedAt = new Date()
+    // todo: remove old avatar
+    await user.save()
+    return user.avatar
+  }
+  return null
 }
 
 const deleteUser = (id: string): void => {
@@ -55,11 +58,14 @@ const deleteUser = (id: string): void => {
   // todo: remove avatar file
 }
 
-const changePlan = async (id: string, plan: string): Promise<User> => {
-  const user: User = await UserModel.findById(id)
-  user.plan = plan
-  await user.save()
-  return user
+const changePlan = async (id: string, plan: string): Promise<User | null> => {
+  const user = await UserModel.findById(id)
+  if (user) {
+    user.plan = plan
+    await user.save()
+    return user
+  }
+  return null
 }
 
 export default {
@@ -73,7 +79,9 @@ export default {
   findByEmail,
   resetPassword: async (id: string, password: string): Promise<void> => {
     const user = await UserModel.findById(id)
-    user.password = user.generateHash(password)
-    await user.save()
+    if (user) {
+      user.password = user.generateHash(password)
+      await user.save()
+    }
   },
 }

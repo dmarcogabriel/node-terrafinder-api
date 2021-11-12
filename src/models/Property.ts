@@ -59,8 +59,9 @@ PropertySchema.statics.findByUserId = function (
 }
 
 PropertySchema.statics.findWithUser = async function (this: PropertyModel, id: string) {
-  const property: Property = await this.findById(id).exec()
-  return property.populate('user').execPopulate()
+  const property = await this.findById(id).exec()
+  if (property) return property.populate('user').execPopulate()
+  return null
 }
 
 export default model<Property, PropertyModel>('Property', PropertySchema)

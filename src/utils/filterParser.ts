@@ -2,14 +2,14 @@ import { isArray, isNil } from 'lodash'
 import { FilterQuery } from 'mongoose'
 import { Property } from '../models/Property'
 
-export const parseRangeFilter = (queryValue: string): FilterQuery<Property> => {
+export const parseRangeFilter = (queryValue: string): FilterQuery<Property> | null => {
   const parsedValue = JSON.parse(queryValue)
   if (!isArray(parsedValue) || isNil(parsedValue)) return null
   const [min, max] = parsedValue
   return { $gte: min, $lte: max }
 }
 
-export const createPropertyFilter = (query: any): FilterQuery<Property> => {
+export const createPropertyFilter = (query: any): FilterQuery<Property> | null => {
   const filters: FilterQuery<Property> = {}
   if (query.isActive) filters.isActive = { $eq: JSON.parse(query.isActive) }
   if (query.amount) {

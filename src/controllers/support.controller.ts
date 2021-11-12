@@ -9,7 +9,7 @@ export default {
         message: 'Support message created successfully.',
       })
     } catch (error) {
-      console.error('support.controller > createSupport', error.message)
+      console.error('support.controller > createSupport', error)
       res.status(500).json({ message: 'alguma mensagem de erro', data: { error } })
     }
   },

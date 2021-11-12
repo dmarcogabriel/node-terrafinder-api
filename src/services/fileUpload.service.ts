@@ -22,7 +22,7 @@ export const deleteFileFromStorage = (fileName: string): boolean => {
     return true
   } catch (error) {
     console.error(`Failed to delete file: ${fileName}`)
-    console.error(error.message)
+    if (error) console.log(error)
     return false
   }
 }

@@ -18,13 +18,19 @@ const PlanSchema = new Schema<Plan, PlanModel>({
 
 PlanSchema.statics.activate = async function (this: PlanModel, id: string) {
   const plan = await this.findById(id).exec()
-  plan.isActive = true
-  plan.activationDate = new Date()
-  await plan.save()
-  return plan
+  if (plan) {
+    plan.isActive = true
+    plan.activationDate = new Date()
+    await plan.save()
+    return plan
+  }
+  return null
 }
 
-PlanSchema.statics.findByUserId = async function (this: PlanModel, userId: string): Promise<Plan> {
+PlanSchema.statics.findByUserId = async function (
+  this: PlanModel,
+  userId: string,
+): Promise<Plan | null> {
   try {
     const [plan] = await this.where('user', userId).exec()
     return plan

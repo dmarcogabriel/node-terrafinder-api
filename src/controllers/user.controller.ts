@@ -34,18 +34,27 @@ const getById = async (req: Request, res: Response<ResponseBody>): Promise<void>
 }
 
 const uploadFile = async (req: Request, res: Response<ResponseBody>): Promise<void> => {
-  if (!req.files && !req.params.id) {
+  const { params, files } = req
+  if (!files && !params.id) {
     res.status(400).json({ message: 'Nenhuma imagem foi selecionada' })
   } else {
     try {
-      const { params, files } = req
-      const file = isArray(files.avatar) ? files.avatar[0] : files.avatar
-      const avatar = await repository.updateAvatar(file, params.id)
+      let file
+      if (files) {
+        file = isArray(files.avatar) ? files.avatar[0] : files.avatar
+      }
+      if (!file) {
+        res.json({
+          message: 'Arquivo não pode ser nulo',
+        })
+      } else {
+        const avatar = await repository.updateAvatar(file, params.id)
 
-      res.status(201).json({
-        message: 'Imagem adicionada com sucesso',
-        data: { avatar },
-      })
+        res.status(201).json({
+          message: 'Imagem adicionada com sucesso',
+          data: { avatar },
+        })
+      }
     } catch (error) {
       res.status(500).json({
         message: 'Ocorreu um erro ao fazer upload',

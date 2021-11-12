@@ -24,16 +24,21 @@ export const activatePlan = async (id: string): Promise<Plan> => {
   return plan
 }
 
-export const updatePlan = async (id: string, data: Plan): Promise<Plan> => {
+export const updatePlan = async (id: string, data: Plan): Promise<Plan | null> => {
   const plan = await PlanModel.findById(id)
-  forIn(data, (value, key: keyof Plan) => {
-    if (plan[key]) (plan as any)[key] = value // ! this is not the best way of doing this
-  })
-  await plan.save()
-  return plan
+  if (plan) {
+    plan.type = data.type || plan.type
+    plan.isActive = data.isActive || plan.isActive
+    plan.activationDate = data.activationDate || plan.activationDate
+    plan.updatedAt = data.updatedAt || plan.updatedAt
+    await plan.save()
+    return plan
+  }
+  return null
 }
 
-export const getPlanById = async (id: string): Promise<Plan> => {
+export const getPlanById = async (id: string): Promise<Plan | null> => {
   const plan = await PlanModel.findById(id)
-  return plan
+  if (plan) return plan
+  return null
 }

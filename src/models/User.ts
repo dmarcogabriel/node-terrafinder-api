@@ -5,7 +5,7 @@ import {
 import jwt from 'jsonwebtoken'
 
 const EXPIRATION_TIME = 60000
-const SECRET_HASH: string = process.env.SECRET
+const SECRET_HASH: string | undefined = process.env.SECRET
 
 export interface User extends Document {
   firstName: string
@@ -68,13 +68,14 @@ UserSchema.methods.validateHash = function (password) {
 }
 
 UserSchema.methods
-  .generateAccessToken = (id: string): string => jwt.sign({ id }, SECRET_HASH, {
+  .generateAccessToken = (id: string): string => jwt.sign({ id }, SECRET_HASH || '', {
     expiresIn: EXPIRATION_TIME,
   })
 
 UserSchema.statics.findWithPlan = async function (this: UserModel, id: string) {
   const user = await this.findById(id).exec()
-  return user.populate('plan').execPopulate()
+  if (user) return user.populate('plan').execPopulate()
+  return null
 }
 
 export default model<User, UserModel>('User', UserSchema)

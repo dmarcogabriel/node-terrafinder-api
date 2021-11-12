@@ -77,6 +77,7 @@ const updatePropertyPhotos = async (req: Request, res: Response): Promise<void> 
 
   try {
     const { files, params } = req
+    if (!files) throw new Error('files field is missing')
     await repository.updatePhotos(files, params.id)
 
     res.status(201).json({
@@ -137,7 +138,7 @@ export default {
         data: { property },
       })
     } catch (error) {
-      console.error(error.message)
+      console.error('property.controller > updateProperty', error)
       res.status(500).json({
         message: 'Erro ao ativar anúncio da propriedade',
       })
@@ -149,7 +150,7 @@ export default {
       console.log('[RETURN]', { filters })
       res.status(200).json({ filters })
     } catch (error) {
-      console.error(error.message)
+      console.error('property.controller > getPropertyFilters', error)
       res.status(500).json({
         message: 'Erro ao buscar filtros',
       })

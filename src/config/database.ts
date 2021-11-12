@@ -1,5 +1,5 @@
 import mongoose from 'mongoose'
-import { blueBright, greenBright, yellow } from 'chalk'
+import { yellow } from 'chalk'
 
 const COLLECTIONS = [
   'users',
