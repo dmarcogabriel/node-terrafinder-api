@@ -9,7 +9,7 @@
   },
   "scripts": {
     "#": "============== RUN ==============",
-    "postinstall": "rimraf dist && tsc",
+    "prestart": "rimraf dist && tsc",
     "start": "node build",
     "dev": "nodemon src/index.ts",
     "start:stg": "echo 'Not working yet'",
@@ -66,7 +66,6 @@
     "@types/shelljs": "^0.8.8",
     "@typescript-eslint/eslint-plugin": "^4.22.0",
     "@typescript-eslint/parser": "^4.22.0",
-    "cross-env": "^7.0.2",
     "eslint": "^7.24.0",
     "eslint-config-airbnb-base": "^14.2.1",
     "eslint-import-resolver-typescript": "^2.4.0",
