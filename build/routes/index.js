@@ -1,0 +1,20 @@
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var express_1 = require("express");
+var auth_controller_1 = __importDefault(require("../controllers/auth.controller"));
+var password_routes_1 = __importDefault(require("./password.routes"));
+var user_routes_1 = __importDefault(require("./user.routes"));
+var property_routes_1 = __importDefault(require("./property.routes"));
+var plan_routes_1 = __importDefault(require("./plan.routes"));
+var support_routes_1 = __importDefault(require("./support.routes"));
+var router = (0, express_1.Router)();
+router.use('/users', user_routes_1.default);
+router.use('/properties', property_routes_1.default);
+router.use('/plans', plan_routes_1.default);
+router.use('/password', password_routes_1.default);
+router.use('/support', support_routes_1.default);
+router.post('/login', auth_controller_1.default.login);
+exports.default = router;

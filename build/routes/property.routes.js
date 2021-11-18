@@ -1,0 +1,20 @@
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var express_1 = require("express");
+var auth_service_1 = __importDefault(require("../services/auth.service"));
+var property_controller_1 = __importDefault(require("../controllers/property.controller"));
+var middlewares_1 = require("../middlewares");
+var policies_1 = require("../policies");
+var router = (0, express_1.Router)();
+router.post('/', auth_service_1.default.authorize, policies_1.propertyPolicies.createPropertyPolicy, middlewares_1.validate, property_controller_1.default.post);
+router.get('/', property_controller_1.default.getAll);
+router.get('/filters', property_controller_1.default.getPropertyFilters);
+router.get('/:id', property_controller_1.default.getById);
+router.get('/user/:userId', property_controller_1.default.getAllByUserId);
+router.put('/upload-photos/:id', auth_service_1.default.authorize, policies_1.propertyPolicies.isUserProperty, middlewares_1.validate, property_controller_1.default.updatePropertyPhotos);
+router.put('/:id', auth_service_1.default.authorize, policies_1.propertyPolicies.isUserProperty, middlewares_1.validate, property_controller_1.default.updateProperty);
+router.delete('/:id', auth_service_1.default.authorize, policies_1.propertyPolicies.isUserProperty, middlewares_1.validate, property_controller_1.default.deleteProperty);
+exports.default = router;

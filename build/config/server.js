@@ -1,0 +1,25 @@
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var express_1 = __importDefault(require("express"));
+var cors_1 = __importDefault(require("cors"));
+var helmet_1 = __importDefault(require("helmet"));
+var compression_1 = __importDefault(require("compression"));
+var express_fileupload_1 = __importDefault(require("express-fileupload"));
+var dotenv_1 = __importDefault(require("dotenv"));
+var middlewares_1 = require("../middlewares");
+require("./logger");
+var app = (0, express_1.default)();
+dotenv_1.default.config();
+app.use((0, helmet_1.default)());
+app.use((0, compression_1.default)());
+app.use(express_1.default.urlencoded({ extended: true }));
+app.use(express_1.default.json());
+app.use((0, cors_1.default)());
+app.use((0, express_fileupload_1.default)({ createParentPath: true }));
+app.use('/images', express_1.default.static(__dirname + "/../storage"));
+app.use((0, middlewares_1.putMethod)());
+app.use((0, middlewares_1.requestLogger)());
+exports.default = app;
