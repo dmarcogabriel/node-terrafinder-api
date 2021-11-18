@@ -22,21 +22,25 @@ const registerLog = (logObject: { [key:string]: any}) => {
   const logData = JSON.stringify(logObject)
     .replace(/\\u([0-9]{3}b)/g, '')
     .replace(/\[([0-9]{2}m)/g, '') // * These 2 'replaces' removes the colors characteres
-  fs.appendFileSync(pathToLogFile, `${logData}\n`)
-  // todo: we can connect with grafana in the future
+  try {
+    fs.appendFileSync(pathToLogFile, `${logData}\n`)
+    // todo: we can connect with grafana in the future
+  } catch (err) {
+    fs.writeFileSync(pathToLogFile, `${logData}\n`)
+  }
 }
 
 console.error = (...data: any[]): void => {
-  registerLog({ error: { timestamp: timestamp(), data } })
+  // registerLog({ error: { timestamp: timestamp(), data } })
   error(redBright('[error] | ', timestamp(), data))
 }
 
 console.info = (name: string, ...data: any[]): void => {
-  registerLog({ info: { timestamp: timestamp(), data } })
+  // registerLog({ info: { timestamp: timestamp(), data } })
   info(`[${blueBright(name.toLowerCase())}] | ${timestamp()} > `, ...data)
 }
 
 console.log = (...data: any[]): void => {
-  registerLog({ log: { timestamp: timestamp(), data } })
+  // registerLog({ log: { timestamp: timestamp(), data } })
   log(`[${blueBright('log')}] |`, ...data)
 }

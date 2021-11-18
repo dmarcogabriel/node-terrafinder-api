@@ -33,15 +33,20 @@ var registerLog = function (logObject) {
     var logData = JSON.stringify(logObject)
         .replace(/\\u([0-9]{3}b)/g, '')
         .replace(/\[([0-9]{2}m)/g, ''); // * These 2 'replaces' removes the colors characteres
-    fs_extra_1.default.appendFileSync(pathToLogFile, logData + "\n");
-    // todo: we can connect with grafana in the future
+    try {
+        fs_extra_1.default.appendFileSync(pathToLogFile, logData + "\n");
+        // todo: we can connect with grafana in the future
+    }
+    catch (err) {
+        fs_extra_1.default.writeFileSync(pathToLogFile, logData + "\n");
+    }
 };
 console.error = function () {
     var data = [];
     for (var _i = 0; _i < arguments.length; _i++) {
         data[_i] = arguments[_i];
     }
-    registerLog({ error: { timestamp: timestamp(), data: data } });
+    // registerLog({ error: { timestamp: timestamp(), data } })
     error((0, chalk_1.redBright)('[error] | ', timestamp(), data));
 };
 console.info = function (name) {
@@ -49,7 +54,7 @@ console.info = function (name) {
     for (var _i = 1; _i < arguments.length; _i++) {
         data[_i - 1] = arguments[_i];
     }
-    registerLog({ info: { timestamp: timestamp(), data: data } });
+    // registerLog({ info: { timestamp: timestamp(), data } })
     info.apply(void 0, __spreadArray(["[" + (0, chalk_1.blueBright)(name.toLowerCase()) + "] | " + timestamp() + " > "], data, false));
 };
 console.log = function () {
@@ -57,6 +62,6 @@ console.log = function () {
     for (var _i = 0; _i < arguments.length; _i++) {
         data[_i] = arguments[_i];
     }
-    registerLog({ log: { timestamp: timestamp(), data: data } });
+    // registerLog({ log: { timestamp: timestamp(), data } })
     log.apply(void 0, __spreadArray(["[" + (0, chalk_1.blueBright)('log') + "] |"], data, false));
 };
