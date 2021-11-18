@@ -1,13 +1,13 @@
 import { Request, Response } from 'express'
 import { ResponseBody } from '../interfaces/ResponseBody'
 import {
-  getUserPlan, createPlan, activatePlan, updatePlan,
+  getPropertyPlan, createPlan, activatePlan, updatePlan,
 } from '../repositories/plan.repository'
 
 export default {
-  getByUserId: async (req: Request, res: Response<ResponseBody>): Promise<void> => {
+  getByPropertyId: async (req: Request, res: Response<ResponseBody>): Promise<void> => {
     try {
-      const plan = await getUserPlan(req.params.userId)
+      const plan = await getPropertyPlan(req.params.propertyId)
       res.status(200).json({ message: 'alguma mensagem de sucesso', data: { plan } })
     } catch (error) {
       res.status(500).json({ message: 'alguma mensagem de erro', data: { error } })

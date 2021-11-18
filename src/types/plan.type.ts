@@ -4,7 +4,7 @@ export type PlanString = 'free-plan' | 'premium-plan' | 'pro-plan'
 
 export interface Plan extends Document {
   type: string
-  user: string
+  property: string
   isActive: boolean
   activationDate: Date
   isDeleted?: boolean
@@ -14,5 +14,5 @@ export interface Plan extends Document {
 
 export interface PlanModel extends Model<Plan> {
   activate(id: string): Promise<Plan>
-  findByUserId(user: string): Promise<Plan>
+  findByPropertyId(property: string): Promise<Plan>
 }

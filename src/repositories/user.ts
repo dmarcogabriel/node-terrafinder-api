@@ -58,16 +58,6 @@ const deleteUser = (id: string): void => {
   // todo: remove avatar file
 }
 
-const changePlan = async (id: string, plan: string): Promise<User | null> => {
-  const user = await UserModel.findById(id)
-  if (user) {
-    user.plan = plan
-    await user.save()
-    return user
-  }
-  return null
-}
-
 export default {
   getAll,
   findById,
@@ -75,7 +65,6 @@ export default {
   deleteUser,
   login,
   updateAvatar,
-  changePlan,
   findByEmail,
   resetPassword: async (id: string, password: string): Promise<void> => {
     const user = await UserModel.findById(id)

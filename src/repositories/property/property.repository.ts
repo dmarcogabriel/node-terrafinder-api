@@ -5,6 +5,7 @@ import { saveFileOnStorage, deleteFileFromStorage } from '../../services/fileUpl
 import { createPropertyFilter } from '../../utils/filterParser'
 import propertyMapper from './property.mapper'
 import { parseMoney } from '../../utils/moneyParser'
+import { filterProperties } from './property.filters'
 
 const create = async (data: Property): Promise<Property> => {
   const property = new PropertyModel(propertyMapper.map({
@@ -21,19 +22,21 @@ interface GetPropertiesResponse {
 }
 
 const getProperties = async (query: any): Promise<GetPropertiesResponse> => {
-  const filter = createPropertyFilter(query)
-  let properties: Property[] | undefined
-
-  if (isNil(filter)) {
-    properties = await PropertyModel.find()
-  } else properties = await PropertyModel.find(filter)
-
+  const properties = await PropertyModel.find().populate('plan')
   const total = await PropertyModel.countDocuments()
+
+  if (!isNil(query)) {
+    return {
+      properties: filterProperties(properties, query),
+      total,
+    }
+  }
+
   return { properties, total }
 }
 
 const getById = async (id: string): Promise<Property> => {
-  const property: Property = await PropertyModel.findWithUser(id)
+  const property: Property = await PropertyModel.findWithUserAndPlan(id)
   return property
 }
 
@@ -66,14 +69,6 @@ const deleteProperty = async (id: string): Promise<void> => {
   }
 }
 
-const activateProperty = async (id: string): Promise<Property> => {
-  const property: Property = await PropertyModel.findWithUser(id)
-  property.isActive = true
-  property.updatedAt = new Date()
-  await property.save()
-  return property
-}
-
 const updateProperty = async (id: string, data: Property): Promise<Property | null> => {
   const property = await PropertyModel.findById(id)
 
@@ -91,7 +86,6 @@ const updateProperty = async (id: string, data: Property): Promise<Property | nu
     if (data.activities) property.activities = data.activities
     if (data.presentationPhoto) property.presentationPhoto = data.presentationPhoto
     if (data.photos) property.photos = data.photos
-    if (data.isActive) property.isActive = data.isActive
 
     await property.save()
     return property
@@ -140,7 +134,15 @@ export default {
   getById,
   updatePhotos,
   deleteProperty,
-  activateProperty,
   updateProperty,
   getFilters,
+  async createPlan(id: string, plan: string): Promise<Property | null> {
+    const property = await PropertyModel.findById(id)
+    if (property) {
+      property.plan = plan
+      await property.save()
+      return property
+    }
+    return null
+  },
 }

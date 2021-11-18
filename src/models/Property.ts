@@ -16,15 +16,15 @@ export interface Property extends Document {
   activities: Array<string>
   presentationPhoto: string
   photos: Array<string>
-  isActive: boolean
   user: any
+  plan: any
   updatedAt: Date
   createdAt: Date
 }
 
 interface PropertyModel extends Model<Property> {
   findByUserId(userId: string): Promise<Array<Property>>
-  findWithUser(id: string): Promise<Property>
+  findWithUserAndPlan(id: string): Promise<Property>
 }
 
 const PropertySchema = new Schema<Property, PropertyModel>({
@@ -41,11 +41,15 @@ const PropertySchema = new Schema<Property, PropertyModel>({
   activities: { type: [String], required: true },
   presentationPhoto: { type: String, required: false },
   photos: { type: [String], required: false },
-  isActive: { type: Boolean, required: false },
   user: {
     type: Schema.Types.ObjectId,
     ref: 'User',
     required: true,
+  },
+  plan: {
+    type: Schema.Types.ObjectId,
+    ref: 'Plan',
+    required: false,
   },
   updatedAt: { type: Date, default: new Date() },
   createdAt: { type: Date, default: new Date() },
@@ -55,12 +59,12 @@ PropertySchema.statics.findByUserId = function (
   this: PropertyModel,
   userId: string,
 ) {
-  return this.where('user', userId).exec()
+  return this.where('user', userId).populate('plan').exec()
 }
 
-PropertySchema.statics.findWithUser = async function (this: PropertyModel, id: string) {
+PropertySchema.statics.findWithUserAndPlan = async function (this: PropertyModel, id: string) {
   const property = await this.findById(id).exec()
-  if (property) return property.populate('user').execPopulate()
+  if (property) return property.populate('user').populate('plan').execPopulate()
   return null
 }
 

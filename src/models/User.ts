@@ -50,11 +50,6 @@ const UserSchema = new Schema<User, UserModel>({
   email: { type: String, required: true },
   password: { type: String, required: true },
   avatar: { type: String, required: false },
-  plan: {
-    type: Schema.Types.ObjectId,
-    ref: 'Plan',
-    required: false,
-  },
   isDeleted: { type: Boolean, default: false },
   updatedAt: { type: Date, default: new Date() },
   createdAt: { type: Date, default: new Date() },

@@ -64,24 +64,6 @@ const uploadFile = async (req: Request, res: Response<ResponseBody>): Promise<vo
   }
 }
 
-const updatePlan = async (req: Request, res: Response): Promise<void> => {
-  try {
-    const { plan } = req.body
-    const { id } = req.params
-    const user = await repository.changePlan(id, plan)
-
-    res.status(200).json({
-      message: 'Plano atualizado com sucesso!',
-      data: { user },
-    })
-  } catch (error) {
-    res.status(500).json({
-      message: 'Ocorreu um erro ao atualizar o plano',
-      data: { error },
-    })
-  }
-}
-
 export default {
-  get, getById, post, uploadFile, updatePlan,
+  get, getById, post, uploadFile,
 }

@@ -1,7 +1,6 @@
-import { forIn } from 'lodash'
 import PlanModel from '../models/Plan'
 import { Plan } from '../types'
-import userRepository from './user'
+import propertyRepository from './property/property.repository'
 
 export const createPlan = async (data: Plan): Promise<string> => {
   const plan: Plan = new PlanModel({
@@ -10,12 +9,12 @@ export const createPlan = async (data: Plan): Promise<string> => {
     activationDate: new Date(),
   })
   await plan.save()
-  await userRepository.changePlan(plan.user, plan._id)
+  await propertyRepository.createPlan(plan.property, plan._id)
   return plan._id
 }
 
-export const getUserPlan = async (userId: string): Promise<Plan> => {
-  const plan = await PlanModel.findByUserId(userId)
+export const getPropertyPlan = async (propertyId: string): Promise<Plan> => {
+  const plan = await PlanModel.findByPropertyId(propertyId)
   return plan
 }
 

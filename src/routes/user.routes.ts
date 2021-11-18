@@ -16,12 +16,5 @@ router.put(
   validate,
   userController.uploadFile,
 )
-router.put(
-  '/:id',
-  authService.authorize,
-  userPolicies.updateUserPolicy,
-  validate,
-  userController.updatePlan,
-)
 
 export default router

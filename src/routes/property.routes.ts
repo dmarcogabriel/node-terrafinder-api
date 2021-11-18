@@ -25,13 +25,6 @@ router.put(
   propertyController.updatePropertyPhotos,
 )
 router.put(
-  '/activate/:id',
-  authService.authorize,
-  propertyPolicies.isUserProperty,
-  validate,
-  propertyController.activateProperty,
-)
-router.put(
   '/:id',
   authService.authorize,
   propertyPolicies.isUserProperty,

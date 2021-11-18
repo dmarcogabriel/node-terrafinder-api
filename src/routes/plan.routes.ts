@@ -13,11 +13,11 @@ router.post(
   validate,
   planController.createPlan,
 )
-router.get('/:userId', authService.authorize, planController.getByUserId)
+router.get('/:propertyId', authService.authorize, planController.getByPropertyId)
 router.put(
   '/activate/:id',
   authService.authorize,
-  planPolicies.isUserPlan,
+  planPolicies.isPropertyPlan,
   validate,
   planController.activatePlan,
 )
@@ -25,7 +25,7 @@ router.put(
   '/:id',
   authService.authorize,
   planPolicies.isPlanStringValid,
-  planPolicies.isUserPlan,
+  planPolicies.isPropertyPlan,
   validate,
   planController.updatePlan,
 )

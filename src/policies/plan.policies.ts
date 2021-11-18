@@ -1,14 +1,14 @@
 import { checkSchema, CustomValidator, body } from 'express-validator'
 import { isNil } from 'lodash'
-import { getUserPlan, getPlanById } from '../repositories/plan.repository'
+import { getPropertyPlan, getPlanById } from '../repositories/plan.repository'
 
-const isUsersPlan: CustomValidator = async (userId: string, { req }) => {
+const isPropertyPlan: CustomValidator = async (propertyId: string, { req }) => {
   if (req.params && req.params.id) {
     const plan = await getPlanById(req.params.id)
-    if (plan && plan.user.toString() === userId) return true
-    throw new Error('Plan does not belong to given user.')
+    if (plan && plan.property.toString() === propertyId) return true
+    throw new Error('Plan does not belong to given property.')
   } else {
-    throw new Error('userId param is missing')
+    throw new Error('propertyId param is missing')
   }
 }
 
@@ -30,15 +30,15 @@ export default {
         options: isPlanStringValid,
       },
     },
-    user: {
+    property: {
       notEmpty: true,
       isString: {
-        errorMessage: 'User must be a string',
+        errorMessage: 'property must be a string',
       },
       custom: {
-        options: async (userId: string) => {
-          const plan = await getUserPlan(userId)
-          if (!isNil(plan)) throw new Error('User has already an existing plan.')
+        options: async (propertyId: string) => {
+          const plan = await getPropertyPlan(propertyId)
+          if (!isNil(plan)) throw new Error('property has already an existing plan.')
         },
       },
     },
@@ -51,6 +51,6 @@ export default {
       isDate: true,
     },
   }),
-  isUserPlan: body('userId').notEmpty().custom(isUsersPlan),
+  isPropertyPlan: body('propertyId').notEmpty().custom(isPropertyPlan),
   isPlanStringValid: body('type').notEmpty().custom(isPlanStringValid),
 }

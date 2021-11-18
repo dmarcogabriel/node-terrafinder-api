@@ -6,9 +6,9 @@ const PlanSchema = new Schema<Plan, PlanModel>({
   userId: { type: String, require: true },
   isActive: { type: Boolean, default: false },
   activationDate: { type: Date, default: null },
-  user: {
+  property: {
     type: Schema.Types.ObjectId,
-    ref: 'User',
+    ref: 'Property',
     requried: true,
   },
   isDeleted: { type: Boolean, default: false },
@@ -27,12 +27,12 @@ PlanSchema.statics.activate = async function (this: PlanModel, id: string) {
   return null
 }
 
-PlanSchema.statics.findByUserId = async function (
+PlanSchema.statics.findByPropertyId = async function (
   this: PlanModel,
-  userId: string,
+  propertyId: string,
 ): Promise<Plan | null> {
   try {
-    const [plan] = await this.where('user', userId).exec()
+    const [plan] = await this.where('property', propertyId).exec()
     return plan
   } catch (error) {
     return null
