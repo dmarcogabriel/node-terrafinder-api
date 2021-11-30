@@ -22,7 +22,7 @@ interface GetPropertiesResponse {
 }
 
 const getProperties = async (query: any): Promise<GetPropertiesResponse> => {
-  const properties = await PropertyModel.find().populate('plan')
+  const properties = await PropertyModel.findOrderByPlan()
   const total = await PropertyModel.countDocuments()
 
   if (!isNil(query)) {

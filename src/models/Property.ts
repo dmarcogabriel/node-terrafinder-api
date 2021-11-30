@@ -25,6 +25,7 @@ export interface Property extends Document {
 interface PropertyModel extends Model<Property> {
   findByUserId(userId: string): Promise<Array<Property>>
   findWithUserAndPlan(id: string): Promise<Property>
+  findOrderByPlan(): Promise<Property[]>
 }
 
 const PropertySchema = new Schema<Property, PropertyModel>({
@@ -66,6 +67,18 @@ PropertySchema.statics.findWithUserAndPlan = async function (this: PropertyModel
   const property = await this.findById(id).exec()
   if (property) return property.populate('user').populate('plan').execPopulate()
   return null
+}
+
+PropertySchema.statics.findOrderByPlan = async function (this: PropertyModel) {
+  const properties = await this.find().populate('plan').exec()
+  const propertiesWithPlan = properties.filter((property) => property.plan)
+  const pro = propertiesWithPlan.filter((property: Property) => property.plan.type === 'pro-plan')
+  const premium = propertiesWithPlan.filter(
+    (property: Property) => property.plan.type === 'premium-plan',
+  )
+  const free = propertiesWithPlan.filter((property: Property) => property.plan.type === 'free-plan')
+
+  return [...pro, ...premium, ...free]
 }
 
 export default model<Property, PropertyModel>('Property', PropertySchema)

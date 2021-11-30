@@ -11,6 +11,7 @@ const authorize = (req: Request, res: Response, next: NextFunction): void => {
       data: { auth: false },
       message: 'Acesso restrito',
     })
+    console.error('auth.service > authorize > Acesso restrito')
   } else {
     jwt.verify(token, SECRET_HASH || '', (error) => {
       if (error) {
@@ -18,6 +19,7 @@ const authorize = (req: Request, res: Response, next: NextFunction): void => {
           data: { auth: false },
           message: 'Token inválido',
         })
+        console.error('auth.service > authorize > Token inválido')
       } else next()
     })
   }

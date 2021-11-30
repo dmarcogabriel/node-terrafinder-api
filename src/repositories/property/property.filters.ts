@@ -1,4 +1,3 @@
-import {} from 'lodash'
 import { Property } from '../../models/Property'
 import { parseMoney } from '../../utils/moneyParser'
 

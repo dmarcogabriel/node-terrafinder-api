@@ -24,6 +24,7 @@ const getAll = async (req: Request, res: Response): Promise<void> => {
       data: { properties, total },
     })
   } catch (err) {
+    console.error(err)
     res.send(err)
   }
 }
@@ -71,7 +72,7 @@ const getAllByUserId = async (req: Request, res: Response): Promise<void> => {
 }
 
 const updatePropertyPhotos = async (req: Request, res: Response): Promise<void> => {
-  if (!req.files && !req.params.id) {
+  if (!req.files) {
     res.status(400).json({ message: 'Nenhuma imagem foi selecionada' })
   }
 
