@@ -80,6 +80,7 @@ var getAll = function (req, res) { return __awaiter(void 0, void 0, void 0, func
                 return [3 /*break*/, 3];
             case 2:
                 err_1 = _b.sent();
+                console.error(err_1);
                 res.send(err_1);
                 return [3 /*break*/, 3];
             case 3: return [2 /*return*/];
@@ -155,7 +156,7 @@ var updatePropertyPhotos = function (req, res) { return __awaiter(void 0, void 0
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
-                if (!req.files && !req.params.id) {
+                if (!req.files) {
                     res.status(400).json({ message: 'Nenhuma imagem foi selecionada' });
                 }
                 _a.label = 1;

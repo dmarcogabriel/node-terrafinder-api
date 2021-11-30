@@ -83,7 +83,7 @@ var getProperties = function (query) { return __awaiter(void 0, void 0, void 0, 
     var properties, total;
     return __generator(this, function (_a) {
         switch (_a.label) {
-            case 0: return [4 /*yield*/, Property_1.default.find().populate('plan')];
+            case 0: return [4 /*yield*/, Property_1.default.findOrderByPlan()];
             case 1:
                 properties = _a.sent();
                 return [4 /*yield*/, Property_1.default.countDocuments()];

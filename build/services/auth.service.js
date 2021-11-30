@@ -12,6 +12,7 @@ var authorize = function (req, res, next) {
             data: { auth: false },
             message: 'Acesso restrito',
         });
+        console.error('auth.service > authorize > Acesso restrito');
     }
     else {
         jsonwebtoken_1.default.verify(token, SECRET_HASH || '', function (error) {
@@ -20,6 +21,7 @@ var authorize = function (req, res, next) {
                     data: { auth: false },
                     message: 'Token inválido',
                 });
+                console.error('auth.service > authorize > Token inválido');
             }
             else
                 next();

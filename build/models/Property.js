@@ -35,6 +35,15 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
+var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
+    if (pack || arguments.length === 2) for (var i = 0, l = from.length, ar; i < l; i++) {
+        if (ar || !(i in from)) {
+            if (!ar) ar = Array.prototype.slice.call(from, 0, i);
+            ar[i] = from[i];
+        }
+    }
+    return to.concat(ar || Array.prototype.slice.call(from));
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 var mongoose_1 = require("mongoose");
 var PropertySchema = new mongoose_1.Schema({
@@ -78,6 +87,23 @@ PropertySchema.statics.findWithUserAndPlan = function (id) {
                     if (property)
                         return [2 /*return*/, property.populate('user').populate('plan').execPopulate()];
                     return [2 /*return*/, null];
+            }
+        });
+    });
+};
+PropertySchema.statics.findOrderByPlan = function () {
+    return __awaiter(this, void 0, void 0, function () {
+        var properties, propertiesWithPlan, pro, premium, free;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, this.find().populate('plan').exec()];
+                case 1:
+                    properties = _a.sent();
+                    propertiesWithPlan = properties.filter(function (property) { return property.plan; });
+                    pro = propertiesWithPlan.filter(function (property) { return property.plan.type === 'pro-plan'; });
+                    premium = propertiesWithPlan.filter(function (property) { return property.plan.type === 'premium-plan'; });
+                    free = propertiesWithPlan.filter(function (property) { return property.plan.type === 'free-plan'; });
+                    return [2 /*return*/, __spreadArray(__spreadArray(__spreadArray([], pro, true), premium, true), free, true)];
             }
         });
     });

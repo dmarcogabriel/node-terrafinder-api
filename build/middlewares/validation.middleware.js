@@ -6,7 +6,9 @@ var chalk_1 = require("chalk");
 var validate = function (req, res, next) {
     var errors = (0, express_validator_1.validationResult)(req);
     if (!errors.isEmpty()) {
-        console.error("[" + (0, chalk_1.greenBright)('Validation Errors') + "]: ", errors.array());
+        errors.array().forEach(function (error) {
+            console.error("[" + (0, chalk_1.greenBright)('Validation Errors') + "]: ", JSON.stringify(error));
+        });
         res.status(400).json({ message: 'Validation Error', data: errors.array() });
     }
     else {
