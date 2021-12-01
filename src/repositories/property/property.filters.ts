@@ -3,6 +3,7 @@ import { parseMoney } from '../../utils/moneyParser'
 
 const MAX_AMOUNT = 50000000.00
 const MAX_SIZE = 350
+const MIN_AMOUNT = 5000.00
 
 export const filterProperties = (
   properties: Property[],
@@ -36,7 +37,7 @@ export const filterProperties = (
     return true
   })
   .filter((property) => {
-    if (filters.amountMin) {
+    if (filters.amountMin && parseMoney(filters.amountMin) > MIN_AMOUNT) {
       return property.amount > parseMoney(filters.amountMin)
     }
     return true

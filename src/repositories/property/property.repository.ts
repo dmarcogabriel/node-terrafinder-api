@@ -103,10 +103,8 @@ const getFilters = async (query: any): Promise<GetFiltersResponse | null> => {
   const removeDuplicatedFilters = <T>(options: T[]) => options.filter(
     (option, i, optionList) => i === optionList.indexOf(option),
   )
-  const filters = createPropertyFilter(query)
-  let properties
-  if (isNil(filters)) properties = await PropertyModel.find()
-  else properties = await PropertyModel.find(filters)
+  const allProperties = await PropertyModel.find().populate('plan')
+  const properties = !isNil(query) ? filterProperties(allProperties, query) : allProperties
 
   if (isNil(properties)) return null
 
