@@ -1,6 +1,6 @@
 {
   "name": "node-express",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "This is a API for Terrafinder app",
   "main": "dist/index.js",
   "engines": {
@@ -26,6 +26,7 @@
   "author": "Gabriel De Marco",
   "license": "ISC",
   "dependencies": {
+    "axios": "^0.24.0",
     "bcrypt": "^5.0.1",
     "body-parser": "1.19.0",
     "chalk": "^4.1.1",
@@ -45,6 +46,7 @@
     "nodemailer": "^6.7.0"
   },
   "devDependencies": {
+    "@types/axios": "^0.14.0",
     "@types/bcrypt": "^3.0.1",
     "@types/chalk": "^2.2.0",
     "@types/compression": "^1.7.0",

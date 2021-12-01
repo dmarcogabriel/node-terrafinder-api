@@ -4,6 +4,7 @@ exports.filterProperties = void 0;
 var moneyParser_1 = require("../../utils/moneyParser");
 var MAX_AMOUNT = 50000000.00;
 var MAX_SIZE = 350;
+var MIN_AMOUNT = 5000.00;
 var filterProperties = function (properties, filters) { return properties
     .filter(function (property) {
     if (filters.isActive) {
@@ -33,7 +34,7 @@ var filterProperties = function (properties, filters) { return properties
     return true;
 })
     .filter(function (property) {
-    if (filters.amountMin) {
+    if (filters.amountMin && (0, moneyParser_1.parseMoney)(filters.amountMin) > MIN_AMOUNT) {
         return property.amount > (0, moneyParser_1.parseMoney)(filters.amountMin);
     }
     return true;

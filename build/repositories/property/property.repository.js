@@ -62,7 +62,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var lodash_1 = require("lodash");
 var Property_1 = __importDefault(require("../../models/Property"));
 var fileUpload_service_1 = require("../../services/fileUpload.service");
-var filterParser_1 = require("../../utils/filterParser");
 var property_mapper_1 = __importDefault(require("./property.mapper"));
 var moneyParser_1 = require("../../utils/moneyParser");
 var property_filters_1 = require("./property.filters");
@@ -202,22 +201,15 @@ var updateProperty = function (id, data) { return __awaiter(void 0, void 0, void
     });
 }); };
 var getFilters = function (query) { return __awaiter(void 0, void 0, void 0, function () {
-    var removeDuplicatedFilters, filters, properties, propertyKinds, propertyStates, propertySizes;
+    var removeDuplicatedFilters, allProperties, properties, propertyKinds, propertyStates, propertySizes;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
                 removeDuplicatedFilters = function (options) { return options.filter(function (option, i, optionList) { return i === optionList.indexOf(option); }); };
-                filters = (0, filterParser_1.createPropertyFilter)(query);
-                if (!(0, lodash_1.isNil)(filters)) return [3 /*break*/, 2];
-                return [4 /*yield*/, Property_1.default.find()];
+                return [4 /*yield*/, Property_1.default.find().populate('plan')];
             case 1:
-                properties = _a.sent();
-                return [3 /*break*/, 4];
-            case 2: return [4 /*yield*/, Property_1.default.find(filters)];
-            case 3:
-                properties = _a.sent();
-                _a.label = 4;
-            case 4:
+                allProperties = _a.sent();
+                properties = !(0, lodash_1.isNil)(query) ? (0, property_filters_1.filterProperties)(allProperties, query) : allProperties;
                 if ((0, lodash_1.isNil)(properties))
                     return [2 /*return*/, null];
                 propertyKinds = removeDuplicatedFilters(properties.map(function (property) { return property.propertyKind; }));
